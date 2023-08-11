@@ -1,9 +1,9 @@
 {
     "USINGAxUnit": {
     "scope": "javascript,typescript,st",
-    "prefix": ["USING <Library>"],
+    "prefix": ["USING LAcycCom"],
     "body": [
-        "USING Simatic.Ax.<Library>;",
+        "USING Simatic.Ax.LAcycCom;",
         "$0"
     ],
     "description": "Create USING for your library;"

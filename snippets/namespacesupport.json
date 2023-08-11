@@ -1,9 +1,9 @@
 {
     "NamespaceSupport": {
     "scope": "javascript,typescript,st",
-    "prefix": ["CreateNamespace for <Library>"],
+    "prefix": ["CreateNamespace for LAcycCom"],
     "body": [
-        "NAMESPACE Simatic.Ax.<Library>",
+        "NAMESPACE Simatic.Ax.LAcycCom",
         "\t$0",
         "END_NAMESPACE"
     ],

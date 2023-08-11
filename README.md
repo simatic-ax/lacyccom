@@ -1,4 +1,4 @@
-# @simatic-ax.<Library>
+# @simatic-ax.lacyccom
 
 ## Description
 
@@ -7,13 +7,13 @@
 Enter:
 
 ```cli
-apax add @simatic-ax/<Library>
+apax add @simatic-ax/lacyccom
 ```
 
 ## Namespace
 
 ```iec-st
-Simatic.Ax.<Library>;
+Simatic.Ax.LAcycCom;
 ```
 
 ## Objects

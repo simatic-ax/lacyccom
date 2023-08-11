@@ -2,10 +2,10 @@ USING AxUnit.Assert;
 
 NAMESPACE Simatic.Ax.Library
     {TestFixture}
-    CLASS MyTestFixture
+    CLASS DummyTestFixture
         {Test}
-        METHOD PUBLIC MyTestMethod
-            ; // AxUnit.Assert.Equal(expected := y, actual := x);
+        METHOD PUBLIC DummyTest
+            AxUnit.Assert.Equal(expected := TRUE, actual := TRUE);
         END_METHOD
     END_CLASS
 END_NAMESPACE

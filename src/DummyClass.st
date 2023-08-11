@@ -1,7 +1,7 @@
 NAMESPACE Simatic.Ax.Library
     
     {axcode:docs-v0:@simatic-ax/lacyccom:MyClass.md}
-    CLASS MyClass
+    CLASS DummyClass
         
         VAR PUBLIC
         END_VAR
