@@ -19,12 +19,12 @@ targets:
   - 'llvm'
 # Dependencies
 devDependencies:
-  '@ax/sdk': ^4.0.3
+  '@ax/sdk': ^4.0.12
   "@simatic-ax/snippetscollection": ^0.0.15
 
 dependencies:
   "@ax/system-timer": ^4.0.1
-  "@ax/simatic-1500-distributedio": ^5.0.7
+  "@ax/simatic-1500-distributedio": ^5.0.20
   "@ax/system-serde": ^2.0.2
 
 # Registry information, where the package will be published

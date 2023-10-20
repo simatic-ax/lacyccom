@@ -1,4 +1,5 @@
 using system.timer;
+using system.DateTime;
 
 NAMESPACE Simatic.Ax.LAcycCom
     TYPE typeGEOADDR : STRUCT
@@ -58,5 +59,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
             LOG2GEO :=0;
     END_FUNCTION
+
+ 
 
 END_NAMESPACE

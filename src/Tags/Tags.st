@@ -8,7 +8,8 @@ NAMESPACE Simatic.Ax.LAcycCom
 		LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM :=	59 ,
 		LENGTH_PARAMETER_TELEGRAM_UPPER_LIM  := 233 ,
 		WRITE_PARAMETERS_UPPER_LIM_SINGLE := 0,
-		LENGTH_WRITE_TELEGRAM_UPPER_LIM := 227   // Maximum length of parameter information when using WRREC
+		LENGTH_WRITE_TELEGRAM_UPPER_LIM := 227,   // Maximum length of parameter information when using WRREC
+		ALL_ELEMENTS_OCCUPIED := -1   // All buffer elements are occupied
 		);		
 	END_TYPE
 
@@ -24,5 +25,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 		LACYCCOM_TYPE_FAULT	:=	SINT#2,
 		LACYCCOM_TYPE_SI_MESSAGE :=	SINT#3
 		);
-	END_TYPE	
+	END_TYPE
+
+
 END_NAMESPACE

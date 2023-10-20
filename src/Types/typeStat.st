@@ -1,12 +1,12 @@
 NAMESPACE Simatic.Ax.LAcycCom
-    Type LAcycCom_TypestatResourceAddInfo  
-        
+    Type LAcycCom_TypestatResourceAddInfo   
         :  Struct   // Additional resource information
              IOSystem  : Int;   // Format and area: 0=central, 1= PNIO, 2= DP, 3= AS-i
              station  : Int;   // Station number, central: rack
         end_struct;
 
     END_Type
+    
     Type LAcycCom_TypestattempCurReqState 
         : Struct   // Current state of the request
             allocated : Bool;   // TRUE: Resource should be allocated to current request

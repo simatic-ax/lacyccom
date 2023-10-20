@@ -58,10 +58,11 @@ NAMESPACE Simatic.Ax.LAcycCom
          maxNoOfRequests  : UInt;   // Maximum number of requests in use in request buffer
          curRuntime  : Time;   // Runtime of last call
          maxRuntime  : Time;   // Maximum runtime of FB
+         status  : Word;   // Current status
       END_STRUCT;
    
       HW_IO : Word (default:=WORD#0);
-
+      
    END_TYPE
 
 END_NAMESPACE
