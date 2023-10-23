@@ -33,10 +33,10 @@ NAMESPACE Simatic.Ax.LAcycCom
             DONE	:Bool;
             BUSY	:Bool;
             ERROR	:Bool;
-            STATUS	:Word;  
+            STATUS	:Word;
         end_var
         VAR_IN_OUT
-            DATA  : Typedata;  
+            DATA  : Typedata;
         END_VAR
 
         DONE    := True;
@@ -53,13 +53,13 @@ NAMESPACE Simatic.Ax.LAcycCom
         VAR_OUTPUT
             GEOADDR : typeGEOADDR;
         end_var
-        
+
             GEOADDR.IOSYSTEM := uint#1;
             GEOADDR.STATION := uint#1;
 
             LOG2GEO :=0;
     END_FUNCTION
 
- 
+
 
 END_NAMESPACE

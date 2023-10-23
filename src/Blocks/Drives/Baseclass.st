@@ -4,7 +4,7 @@ using siemens.Simatic.S71500.DistributedIO;
 NAMESPACE Simatic.Ax.LAcycCom
 
     CLASS ABSTRACT ReadWriteParameter
-        VAR 
+        VAR
             statrequestBuffer : Resourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
             statdiagnostics   : LAcycCom_ooptypeDrivediagnostics;   // statdiagnostics structure
             statTimerStart   : Bool := FALSE;   // TRUE: Starts IEC-Timer
@@ -30,18 +30,18 @@ NAMESPACE Simatic.Ax.LAcycCom
             statReqParameter   : LAcycCom_TypestatstatReqParameter;   // Request telegram
             parameterAddress   : Array[0..typeconstantsint#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
             statReqParameterInit   : LAcycCom_TypestatparameterAddress :=(attribute := byte#16#10, elementNo  := byte#16#01, parameterNo := uint#0, index := uint#0);
-  
+
             statRespParameter   : LAcycCom_TypestatRespParameter;   // Response telegram
             instWRREC : writerecord;   // WRREC command
             instRDREC  : ReadRecord;   // RDREC command
             instIECTimer  : ondelay;   // IEC-Timer
-  
+
             atmpSend : ARRAY[0..237]of BYTE ;
             atmpRec  : ARRAY[0..237]of BYTE ;
-  
+
          END_VAR
-    
-         VAR CONSTANT 
+
+         VAR CONSTANT
             DATA_TYPE_SILENT : SInt := SInt#1;   // LAcycCom_typeDriveSilentOperation is in use
             DATA_TYPE_DATASET_REAL : SInt := SInt#2;   // LAcycCom_typeDriveDatasetReal is in use
             DATA_TYPE_DATASET_DWORD : SInt := SInt#3;   // LAcycCom_typeDriveDatasetDWord is in use
@@ -99,53 +99,53 @@ NAMESPACE Simatic.Ax.LAcycCom
             ERR_PARAMETER : Word := word#16#8619;   // Error in at least one parameter (see: errorValue in dataset)
          END_VAR
 
-   
+
         METHOD ABSTRACT BUSY END_METHOD
-    
+
         METHOD PUBLIC FINAL execute
 
             //----------------------------------------------------------------------
             // State Machine
             //----------------------------------------------------------------------
-            
+
             IF not (statFBState = OOP_ReadWriteStatus#FB_IDLE OR
                     statFBState = OOP_ReadWriteStatus#FB_DONE or
                     statFBState = OOP_ReadWriteStatus#FB_ERROR ) THEN  // Functionality running
               CASE statFBState OF
                 OOP_ReadWriteStatus#FB_FIRST_CYCLE:  // First cycle state
-                  
+
                     This.FIRST_CYCLE();
-    
+
                     OOP_ReadWriteStatus#FB_ALLOCATE:
 
                     This.Allocate();
 
                 OOP_ReadWriteStatus#FB_GET_RESOURCE:
-    
+
                     This.GET_RESOURCE();
-                  
+
                 OOP_ReadWriteStatus#FB_BUSY:
-                  
+
                     This.BUSY();
 
                 OOP_ReadWriteStatus#FB_RELEASE:
 
                     This.RELEASE();
-                  
+
                 ELSE
                   statStatus := ERR_UNDEFINED_STATE;
                   statStateNumber := statFBState;
                   statFBState := OOP_ReadWriteStatus#FB_ERROR;
               END_CASE;
-              
-             
+
+
             END_IF;
-    
+
             //----------------------------------------------------------------------
             // Error handling and write outputs
             //----------------------------------------------------------------------
-            
-            
+
+
             IF (statFBState = OOP_ReadWriteStatus#FB_ERROR) THEN
               // Release the allocated element when error occurs
               IF (statStateNumber <> OOP_ReadWriteStatus#FB_FIRST_CYCLE) AND (statStateNumber <> OOP_ReadWriteStatus#FB_ALLOCATE)
@@ -157,12 +157,12 @@ NAMESPACE Simatic.Ax.LAcycCom
               statdiagnostics.status := statStatus;
 
             END_IF;
-      
+
         END_METHOD
 
-        METHOD final FIRST_CYCLE 
-            VAR_TEMP 
-                tempLoopIndex : Int;   
+        METHOD final FIRST_CYCLE
+            VAR_TEMP
+                tempLoopIndex : Int;
                 tempVoidDiagnostics : LAcycCom_ooptypeDriveDiagnostics;   // Temporary empty diagnostics structure
                 tempVoidHeader : LAcycCom_Typestatheader;   // Temporary empty header structure
              END_VAR
@@ -172,80 +172,80 @@ NAMESPACE Simatic.Ax.LAcycCom
               FOR tempLoopIndex := 0 TO typeconstantsint#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM DO
                 statReqParameter.parameterAddress[tempLoopIndex] := statReqParameterInit;
               END_FOR;
-              
+
               // Clearing the receive buffer
               statRespParameter.header := tempVoidHeader;
               FOR tempLoopIndex := 0 TO LENGTH_PARAMETER_TELEGRAM_UPPER_LIM DO
                 statRespParameter.data[tempLoopIndex] := byte#16#00;
               END_FOR;
-              
+
               // Initialization after start, depending on the used PLC data type
-              
+
                 IF statDoId < byte#0 THEN // V1.5
                   statDataRecordNo := 16#B02E; // Base Mode Parameter Access local; doId not relevant
-                  
+
                 ELSIF (statDoId <= to_byte(MAX_DRIVE_OBJECT_NO))
                   AND (statDoId <> byte#0)
                 THEN // V1.5.2
                   statDataRecordNo := 47; // Data record 47; Base Mode Parameter Access global
-                   
-                ELSE // V1.5.2 
+
+                ELSE // V1.5.2
                   // Wrong drive object ID at input
                   statStateNumber := statFBState;
                   statStatus := ERR_INVALID_DRIVE_OBJECT_ID;
                   statFBState := OOP_ReadWriteStatus#FB_ERROR;
                 END_IF;
-                
+
                 statHwId := statHwId;
-              
+
               statdiagnostics := tempVoidDiagnostics;
               IF statStatus = WARN_EXECUTE THEN
                 statdiagnostics.status := statStatus;
               END_IF;
-              
+
               statdiagnostics.driveObjectId := to_usint(statDoId);
               statdiagnostics.hardwareId := statHwId;
               statdiagnostics.firstParameterError := statFirstParameterError; // V1.3.2
               statdiagnostics.errorValue := byte#16#FF; // V1.3.2
-              
+
               // Reference number for next request
               statRefNo := to_byte(to_int(statRefNo) + int#1);
-              
+
               IF statFBState = OOP_ReadWriteStatus#FB_ERROR THEN // V1.5.2: Check if error appeared
                 ;
-              
+
               // Next state is depending on the FB mode
-            ELSE 
+            ELSE
                 statStatus := STATUS_ALLOCATE;
                 statFBState := OOP_ReadWriteStatus#FB_ALLOCATE;
-                
+
             END_IF;
-              
+
         END_METHOD
 
         METHOD FINAL Allocate
                   // Allocation of a request element
                   statAllocatedIndex := statrequestBuffer.allocate(hardwareId :=statHwId);
-    
+
                   IF statAllocatedIndex >= 0 THEN
-    
+
                     statTimerStart := FALSE;
                     statStatus := STATUS_GET_RESOURCE;
                     statFBState := OOP_ReadWriteStatus#FB_GET_RESOURCE;
-                    
-                    
+
+
                   ELSIF (instIECTimer.output = TRUE) THEN
                     statStateNumber := statFBState;
                     statStatus := ERR_ALLOCATION_TIME;
                     statFBState := OOP_ReadWriteStatus#FB_ERROR;
-                    
+
                   ELSE
                     ; // Waiting until lockbit is reset and a request element is available
                   END_IF; // (buffer.lockBuffer = FALSE) AND (buffer.actualWriteIndex >= 0)
-                  
+
                   instIECTimer(signal := statTimerStart,
                                 duration := TIMER_ALLOCATION);
-                  
+
                   statTimerStart := TRUE;
                   IF (instIECTimer.output = TRUE) THEN
                     statTimerStart := FALSE;
@@ -259,49 +259,49 @@ NAMESPACE Simatic.Ax.LAcycCom
                   statStateNumber := statFBState;
                   statStatus := ERR_INVALID_BUF_INDEX;
                   statFBState := OOP_ReadWriteStatus#FB_ERROR;
-                  
+
                 OOP_ResourceManager_retval#ERR_REQUEST_REJECTED:
                     // Request was rejected by buffer manager
                     statStateNumber := statFBState;
                     statStatus := ERR_REQUEST_REJECTED;
                     statFBState := OOP_ReadWriteStatus#FB_ERROR;
-                    
+
                 OOP_ResourceManager_retval#ERR_RESOURCE_RELEASED:
                     // Request already released
                     statStateNumber := statFBState;
                     statStatus := ERR_RESOURCE_RELEASED;
                     statFBState := OOP_ReadWriteStatus#FB_ERROR;
-                    
+
                 OOP_ResourceManager_retval#STATUS_BUSY:
                     // Element is enabled
                     statStatus := STATUS_BUSY;
                     statFBState := OOP_ReadWriteStatus#FB_BUSY;
                     statFBSubState := OOP_ReadWriteStatus#FB_GET_SUBSTATE;
-                    
+
                 OOP_ResourceManager_retval#STATUS_GET_RESOURCE:
                     // Element not enabled yet
-                    // 
+                    //
                     statStatus := STATUS_GET_RESOURCE;
                 else
-                  ;  
+                  ;
                 END_CASE;
-        end_Method  
-        
-        METHOD FINAL RELEASE  
+        end_Method
+
+        METHOD FINAL RELEASE
                   case statrequestBuffer.release(statAllocatedIndex) of
                     OOP_ResourceManager_retval#ERR_INVALID_BUF_INDEX:
                       statStatus := ERR_INVALID_BUF_INDEX;
                       statStateNumber := statFBState;
                       statFBState := OOP_ReadWriteStatus#FB_ERROR;
-                    
+
                     OOP_ResourceManager_retval#STATUS_EXECUTION_FINISHED:
                       statStatus := STATUS_EXECUTION_FINISHED;
                       statFBState := OOP_ReadWriteStatus#FB_DONE;
                   else
                     ;
                   END_case;
-        end_Method   
-              
+        end_Method
+
         Method public FINAL errordiagnostics   : LAcycCom_ooptypeDrivediagnostics;
             errordiagnostics := statdiagnostics;
         End_Method
@@ -312,9 +312,9 @@ NAMESPACE Simatic.Ax.LAcycCom
                     Status := LAcycComstate_def#IDLE;
 
                 OOP_ReadWriteStatus#FB_FIRST_CYCLE,
-                OOP_ReadWriteStatus#FB_ALLOCATE,    
+                OOP_ReadWriteStatus#FB_ALLOCATE,
                 OOP_ReadWriteStatus#FB_GET_RESOURCE,
-                OOP_ReadWriteStatus#FB_BUSY,        
+                OOP_ReadWriteStatus#FB_BUSY,
                 OOP_ReadWriteStatus#FB_RELEASE:
                     Status := LAcycComstate_def#BUSY;
 
@@ -325,12 +325,12 @@ NAMESPACE Simatic.Ax.LAcycCom
                     Status := LAcycComstate_def#Error;
 
                 else
-                ;    
+                ;
             END_CASE;
         End_Method
 
         METHOD PUBLIC FINAL Config : Bool
-          VAR_INPUT 
+          VAR_INPUT
               requestBuffer : Resourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
            END_VAR
 

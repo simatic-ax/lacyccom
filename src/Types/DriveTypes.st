@@ -1,5 +1,5 @@
 NAMESPACE Simatic.Ax.LAcycCom
-   
+
    TYPE LAcycCom_typeDriveDataset
 
       : STRUCT
@@ -9,9 +9,9 @@ NAMESPACE Simatic.Ax.LAcycCom
          DWvalue : DWord := DWORD#16#0000_0000;   // Parameter value
          errorValue : Byte := byte#2#11111111;    // Error number (16#FF: no error; else: see error list)
       END_STRUCT;
-   
-   END_TYPE 
-(* 
+
+   END_TYPE
+(*
    TYPE LAcycCom_typeDriveDiagnostics
 
       : STRUCT
@@ -39,10 +39,10 @@ NAMESPACE Simatic.Ax.LAcycCom
             firstParameterError : Int := -1;   // Number of parameter at which the error occurred (-1: no parameter with error)
             errorValue : Byte := byte#2#11111111;    // Error number (16#FF: no error; else: see error list)
          END_STRUCT;
-      
+
    END_TYPE
 
-(* 
+(*
    TYPE LAcycCom_typeDriveMessages
         : STRUCT
             code : Array[0..typeconstantsint#LACYCCOM_MESSAGES_UPPER_LIM] of UInt;
@@ -50,7 +50,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             comeDateAndTime : Array[0..typeconstantsint#LACYCCOM_MESSAGES_UPPER_LIM] of LDATE_AND_TIME;
             Mtype  : Array[0..typeconstantsint#LACYCCOM_MESSAGES_UPPER_LIM] of SInt;
          END_STRUCT;
-      
-      END_TYPE 
+
+      END_TYPE
 *)
 END_NAMESPACE
