@@ -36,7 +36,7 @@ PROGRAM MyProgram
         ReadParameterSingle     : LAcycCom_classReadDriveSingleParams;
         WriteParameter          : LAcycCom_classWriteDriveParams;
         ReadParameter           : LAcycCom_classReadDriveParams;
-     
+
         diagnostic : LAcycCom_ooptypeDrivediagnostics;
 
         RVALUEp304 : real;
@@ -56,12 +56,10 @@ PROGRAM MyProgram
     WriteParameterSingle.execute();
 
     If FirstCycle Then
-
         ReadParameter.Config(requestBuffer   := Resourcemanager);
         ReadParameterSingle.Config(requestBuffer   := Resourcemanager);
         WriteParameter.Config(requestBuffer   := Resourcemanager);
         WriteParameterSingle.Config(requestBuffer   := Resourcemanager);
-
     end_IF;
 
     CASE ReadParameter.Status() OF
