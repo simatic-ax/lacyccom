@@ -5,11 +5,11 @@ NAMESPACE Simatic.Ax.LAcycCom
          bufferIndex : Int := -1;   // Index of buffer element
          maxAssignedTime : Time := T#1M;   // Maximum time a resource is assigned to a request
       END_STRUCT;
-   
+
    END_TYPE
-   
+
    TYPE LAcycCom_typeRequestBufferElement
- 
+
       : STRUCT
          state  : Byte := byte#2#00000000;   // State of the request. Bit 0: allocate new buffer element; Bit 1: buffer element is assigned; Bit 2: release buffer element; Bit 3: request rejected
          hardwareId  : HW_IO := HW_IO#default;   // Hardware identifier of the hardware module
@@ -17,7 +17,7 @@ NAMESPACE Simatic.Ax.LAcycCom
          queueElementNext  : Int := -1;   // Element in queue after this element
          queueTime  : Time := T#0MS;   // Time duration element is in queue
       END_STRUCT;
-   
+
    END_TYPE
 
    TYPE LAcycCom_typeRequestBufferHeader
@@ -29,7 +29,7 @@ NAMESPACE Simatic.Ax.LAcycCom
          numberOfRequests : Int := -1;   // Number of existing requests in request buffer not released yet
          activeRequests : Array[0..19] of LAcycCom_typeActiveRequest;   // Currently enabled request elements
       END_STRUCT;
-   
+
    END_TYPE
 
    TYPE LAcycCom_typeRequestBuffer
@@ -38,9 +38,9 @@ NAMESPACE Simatic.Ax.LAcycCom
          header  : LAcycCom_typeRequestBufferHeader;   // Request header
          elements  : Array[0..typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM] of LAcycCom_typeRequestBufferElement;   // Request elements
       END_STRUCT;
-   
+
    END_TYPE
-   
+
    TYPE LAcycCom_typeResourceManagerConf
 
       : STRUCT
@@ -49,9 +49,9 @@ NAMESPACE Simatic.Ax.LAcycCom
          maxAssignedTime : Time := T#1M;   // Maximum time a resource is assigned to a request
          delayReleaseAfterReject : Time := T#10S;   // Delay for releasing resource after it was rejected by resource manager
       END_STRUCT;
-   
+
    END_TYPE
-   
+
    TYPE LAcycCom_typeResourceManagerDiag
 
       : STRUCT
@@ -60,9 +60,9 @@ NAMESPACE Simatic.Ax.LAcycCom
          maxRuntime  : Time;   // Maximum runtime of FB
          status  : Word;   // Current status
       END_STRUCT;
-   
+
       HW_IO : Word (default:=WORD#0);
-      
+
    END_TYPE
 
 END_NAMESPACE

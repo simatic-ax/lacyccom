@@ -1,8 +1,8 @@
 NAMESPACE Simatic.Ax.Library
-    
+
     {axcode:docs-v0:@simatic-ax/lacyccom:MyClass.md}
     CLASS DummyClass
-        
+
         VAR PUBLIC
         END_VAR
 
@@ -14,7 +14,7 @@ NAMESPACE Simatic.Ax.Library
         METHOD PUBLIC MyMethod
             ;
         END_METHOD
-    
+
     END_CLASS
 
 END_NAMESPACE

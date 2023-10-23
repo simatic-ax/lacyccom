@@ -27,7 +27,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             STATUS_GET_RESOURCE,
             STATUS_EXECUTION_FINISHED
         );
-    
+
         LAcycComstate_def : (
             BUSY,
             IDLE,
