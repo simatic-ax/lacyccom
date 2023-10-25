@@ -2,5 +2,6 @@
 .env
 bin
 obj
-testresult
-./apax-lock.json
+TestResult
+*.tgz
+assets
