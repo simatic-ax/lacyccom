@@ -36,9 +36,7 @@ PROGRAM MyProgram
         ReadParameterSingle     : LAcycCom_classReadDriveSingleParams;
         WriteParameter          : LAcycCom_classWriteDriveParams;
         ReadParameter           : LAcycCom_classReadDriveParams;
-
         diagnostic : LAcycCom_ooptypeDrivediagnostics;
-
         RVALUEp304 : real;
         RVALUEp305 : real;
         RVALUEp310 : real;
