@@ -29,7 +29,7 @@ Simatic.Ax.LAcycCom;
 
 ## Example
 
-
+```cli
 PROGRAM MyProgram
     VAR
         Resourcemanager         : OOPLAcycCom_ResourceManager;
@@ -150,6 +150,7 @@ PROGRAM MyProgram
 
     FirstCycle := False;
 END_PROGRAM
+```
 
 ## Contribution
 
