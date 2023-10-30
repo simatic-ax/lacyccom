@@ -468,5 +468,33 @@ NAMESPACE Simatic.Ax.LAcycCom
 
         End_Method
 
+        Method public ReaddatasetValue : real
+          VAR_INPUT
+              element_no  : int := int#0;
+          end_VAR
+          VAR_TEMP
+              tempLoopIndex : Int;
+          end_VAR
+
+          If element_no >= 0 and element_no <= typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            ReaddatasetValue := dataset[element_no].value;
+          end_if;
+
+        End_Method
+
+        Method public ReaddatasetDWValue : DWORD
+          VAR_INPUT
+              element_no  : int := int#0;
+          end_VAR
+          VAR_TEMP
+              tempLoopIndex : Int;
+          end_VAR
+
+          If element_no >= 0 and element_no <= typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            ReaddatasetDWValue := dataset[element_no].DWvalue;
+          end_if;
+
+        End_Method
+
     END_CLASS
 END_NAMESPACE    

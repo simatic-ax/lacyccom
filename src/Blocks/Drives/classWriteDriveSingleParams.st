@@ -528,10 +528,5 @@ NAMESPACE Simatic.Ax.LAcycCom
              END_IF;
         END_METHOD
 
-        METHOD PUBLIC ReqReadParameter : LAcycCom_TypestatstatReqParameter
-
-            ReqReadParameter := statReqReadParameter;
-        END_METHOD
-
     END_CLASS
 END_NAMESPACE    
