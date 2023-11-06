@@ -30,6 +30,8 @@ Simatic.Ax.LAcycCom;
 ## Example
 
 ```cli
+USING Simatic.Ax.LAcycCom;
+
 PROGRAM MyProgram
     VAR
         Resourcemanager         : OOPLAcycCom_ResourceManager;
