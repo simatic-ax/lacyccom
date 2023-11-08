@@ -36,7 +36,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
       : STRUCT
          header  : LAcycCom_typeRequestBufferHeader;   // Request header
-         elements  : Array[0..typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM] of LAcycCom_typeRequestBufferElement;   // Request elements
+         elements  : Array[0..LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM] of LAcycCom_typeRequestBufferElement;   // Request elements
       END_STRUCT;
 
    END_TYPE

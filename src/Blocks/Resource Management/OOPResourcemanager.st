@@ -8,14 +8,14 @@ NAMESPACE Simatic.Ax.LAcycCom
          END_VAR
         END_METHOD
 
-        METHOD GetRessource : OOP_ResourceManager_retval
+        METHOD GetRessource : LAcycCom_ResourceManagerRetval
             VAR_INPUT
                 AllocatedIndex : INT;
             end_var
 
         END_METHOD
 
-        METHOD Release : OOP_ResourceManager_retval
+        METHOD Release : LAcycCom_ResourceManagerRetval
           VAR_INPUT
               AllocatedIndex : INT;
           end_var
@@ -135,7 +135,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           statdiagnostics.maxNoOfRequests := uint#0;
           statdiagnostics.maxRuntime := t#0s;
 
-          FOR tempIndex := 0 TO typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM DO
+          FOR tempIndex := 0 TO LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM DO
             requestBuffer.elements[tempIndex].state := BYTE#16#00;
             requestBuffer.elements[tempIndex].hardwareId :=  HW_IO#default;
             requestBuffer.elements[tempIndex].queueElementNext := -1;
@@ -557,7 +557,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
         ELSE
           //Process normal output values
-          IF (tempNoOfRequests > typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
+          IF (tempNoOfRequests > LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
             status := STATUS_BUFFER_FULL; // Buffer is full at the moment
           ELSE
             status := STATUS_SUBSEQUENT_CALL; //Set status for subsequent call
@@ -584,7 +584,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           tempLastQueueElement : Int;
       end_var
 
-      IF (requestBuffer.header.lockBuffer = FALSE) AND (requestBuffer.header.nextFreeElement >= 0) AND (requestBuffer.header.nextFreeElement <= typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
+      IF (requestBuffer.header.lockBuffer = FALSE) AND (requestBuffer.header.nextFreeElement >= 0) AND (requestBuffer.header.nextFreeElement <= LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
         requestBuffer.header.lockBuffer := TRUE;
         Allocate := requestBuffer.header.nextFreeElement;
         requestBuffer.elements[Allocate].state := byte#16#00;
@@ -611,15 +611,15 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
         END_IF;
 
         // Searching for the next free request element
-        FOR tempLoopIndex := 0 TO typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM DO
+        FOR tempLoopIndex := 0 TO LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM DO
           IF (requestBuffer.elements[tempLoopIndex].state.%X0 = FALSE) THEN
             requestBuffer.header.nextFreeElement := tempLoopIndex;
             EXIT;
           END_IF;
 
           // All request elements are occupied
-          IF (tempLoopIndex = typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
-            requestBuffer.header.nextFreeElement := typeconstantsint#ALL_ELEMENTS_OCCUPIED;
+          IF (tempLoopIndex = LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
+            requestBuffer.header.nextFreeElement := LAcycComConstantsInt#ALL_ELEMENTS_OCCUPIED;
           END_IF;
         END_FOR;
 
@@ -632,42 +632,42 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
     END_METHOD
 
-    METHOD PUBLIC GetRessource : OOP_ResourceManager_retval
+    METHOD PUBLIC GetRessource : LAcycCom_ResourceManagerRetval
       VAR_INPUT
           AllocatedIndex : INT := -1;
       end_var
                     // Check buffer index for correctness
-                    IF (AllocatedIndex < 0) OR (AllocatedIndex > typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
-                      GetRessource := OOP_ResourceManager_retval#ERR_INVALID_BUF_INDEX;
+                    IF (AllocatedIndex < 0) OR (AllocatedIndex > LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
+                      GetRessource := LAcycCom_ResourceManagerRetval#ERR_INVALID_BUF_INDEX;
 
                     ELSE
                       IF (requestBuffer.elements[AllocatedIndex].state.%X0 = FALSE) OR
                         (requestBuffer.elements[AllocatedIndex].state.%X3 = TRUE)
                       THEN
                         // Request was rejected by buffer manager
-                        GetRessource := OOP_ResourceManager_retval#ERR_REQUEST_REJECTED;
+                        GetRessource := LAcycCom_ResourceManagerRetval#ERR_REQUEST_REJECTED;
 
                       ELSIF (requestBuffer.elements[AllocatedIndex].state.%X2 = TRUE) THEN
                         // Request already released
-                        GetRessource := OOP_ResourceManager_retval#ERR_RESOURCE_RELEASED;
+                        GetRessource := LAcycCom_ResourceManagerRetval#ERR_RESOURCE_RELEASED;
 
                       ELSIF (requestBuffer.elements[AllocatedIndex].state.%X1 = TRUE) THEN
                         // Element is enabled
-                        GetRessource := OOP_ResourceManager_retval#STATUS_BUSY;
+                        GetRessource := LAcycCom_ResourceManagerRetval#STATUS_BUSY;
 
                       ELSE
                         // Element not enabled yet
-                        GetRessource := OOP_ResourceManager_retval#STATUS_GET_RESOURCE;
+                        GetRessource := LAcycCom_ResourceManagerRetval#STATUS_GET_RESOURCE;
                       END_IF;
 
                     END_IF;
   END_METHOD
-  METHOD PUBLIC Release : OOP_ResourceManager_retval
+  METHOD PUBLIC Release : LAcycCom_ResourceManagerRetval
     VAR_INPUT
         AllocatedIndex : INT;
     end_var
-    IF (AllocatedIndex < 0) OR (AllocatedIndex > typeconstantsint#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
-      Release := OOP_ResourceManager_retval#ERR_INVALID_BUF_INDEX;
+    IF (AllocatedIndex < 0) OR (AllocatedIndex > LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
+      Release := LAcycCom_ResourceManagerRetval#ERR_INVALID_BUF_INDEX;
 
 
 
@@ -678,7 +678,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
       ELSE
         ;
       END_IF;
-      Release := OOP_ResourceManager_retval#STATUS_EXECUTION_FINISHED;
+      Release := LAcycCom_ResourceManagerRetval#STATUS_EXECUTION_FINISHED;
       requestBuffer.header.lockBuffer := FALSE;
 
     END_IF;

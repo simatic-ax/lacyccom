@@ -1,6 +1,6 @@
 NAMESPACE Simatic.Ax.LAcycCom
     Type
-        OOP_ReadWriteStatus : (
+        LAcycCom_ReadWriteStatus : (
             FB_IDLE,        // Idle state in FB
             FB_FIRST_CYCLE, // First cycle state in FB
             FB_ALLOCATE,    // Allocating a request element in request buffer DB
@@ -19,7 +19,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             FB_GET_SUBSTATE
         );
 
-        OOP_ResourceManager_retval : (
+        LAcycCom_ResourceManagerRetval : (
             ERR_INVALID_BUF_INDEX,
             ERR_REQUEST_REJECTED,
             ERR_RESOURCE_RELEASED,
@@ -28,7 +28,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             STATUS_EXECUTION_FINISHED
         );
 
-        LAcycComstate_def : (
+        LAcycComstateDef : (
             BUSY,
             IDLE,
             DONE,

@@ -1,6 +1,6 @@
 NAMESPACE Simatic.Ax.LAcycCom
 	//global constants, have to be converted
-	TYPE typeconstantsint : INT (		
+	TYPE LAcycComConstantsInt : INT (		
 		LACYCCOM_WRITE_PARAMETERS_UPPER_LIM	 :=	18	,
 		LACYCCOM_READ_PARAMETERS_UPPER_LIM	:=	38	,// Maximum count of parameters
 		LACYCCOM_SILENT_OPERATION_PARAMETERS_UPPER_LIM	:=	17	,
@@ -13,14 +13,14 @@ NAMESPACE Simatic.Ax.LAcycCom
 		);		
 	END_TYPE
 
-	type typeconstantsbyte : byte (
+	type LAcycComConstantsByte : byte (
 		LACYCCOM_NO_COMMAND :=	BYTE#16#00,
 		LACYCCOM_READ_COMMAND :=	BYTE#16#01,
 		LACYCCOM_WRITE_COMMAND :=	BYTE#16#02
 		);
 	END_TYPE
 
-	type typeconstantssint : SINT (
+	type LAcycComConstantsSInt : SINT (
 		LACYCCOM_TYPE_ALARM	:=	SINT#1,
 		LACYCCOM_TYPE_FAULT	:=	SINT#2,
 		LACYCCOM_TYPE_SI_MESSAGE :=	SINT#3

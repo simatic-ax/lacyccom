@@ -5,7 +5,7 @@ NAMESPACE Simatic.Ax.LAcycCom
       : STRUCT
          parameterNumber : UInt := uint#0;   // Number of the parameter
          index : UInt := uint#0;   // Parameter index
-         value : Real := real#0.0;   // Parameter value
+         Rvalue : Real := real#0.0;   // Parameter value
          DWvalue : DWord := DWORD#16#0000_0000;   // Parameter value
          errorValue : Byte := byte#2#11111111;    // Error number (16#FF: no error; else: see error list)
       END_STRUCT;
@@ -32,7 +32,7 @@ NAMESPACE Simatic.Ax.LAcycCom
          : STRUCT
             status :  Word := word#16#0000;   // Status identifier when error occurred
             subfunctionStatus : Word := word#16#0000;   // Block status or error information
-            stateNumber : OOP_ReadWriteStatus;   // State of the FB when error occurred
+            stateNumber : LAcycCom_ReadWriteStatus;   // State of the FB when error occurred
             driveObjectId : USInt := usint#0;   // Identification number of the drive object
             hardwareId : HW_IO := HW_IO#default;   // Hardware identifier of the hardware module
             parameterCount : Int := 0;   // Total amount of parameters
