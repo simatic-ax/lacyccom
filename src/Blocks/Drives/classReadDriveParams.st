@@ -5,7 +5,7 @@ NAMESPACE Simatic.Ax.LAcycCom
     CLASS LAcycCom_classReadDriveParams EXTENDS ReadWriteParameter
         var Private
             statparameterCount : Int := -1;
-            dataset : Array[0..typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
+            dataset : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
         end_VAR
 
 
@@ -22,13 +22,13 @@ NAMESPACE Simatic.Ax.LAcycCom
                 tempActualElementReal : LAcycCom_typeDriveDataset;   // Temporary element of the dataset (real values)
              END_VAR
 
-            IF (statrequestBuffer.GetRessource(statAllocatedIndex)=OOP_ResourceManager_retval#STATUS_BUSY)
+            IF (statrequestBuffer.GetRessource(statAllocatedIndex)=LAcycCom_ResourceManagerRetval#STATUS_BUSY)
                 THEN
                   CASE statFBSubState OF
-                    OOP_ReadWriteStatus#FB_GET_SUBSTATE:
-                      statFBSubState := OOP_ReadWriteStatus#FB_BUSY_WRREC;
+                    LAcycCom_ReadWriteStatus#FB_GET_SUBSTATE:
+                      statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
 
-                    OOP_ReadWriteStatus#FB_BUSY_WRREC:  // Writing the dataset configuration into the drive object
+                    LAcycCom_ReadWriteStatus#FB_BUSY_WRREC:  // Writing the dataset configuration into the drive object
 
                       IF (statCmdBusy = FALSE) THEN
                         // Resets WRREC command
@@ -68,7 +68,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
 
                       // Error occurred
-                      IF (statCmdError = TRUE) AND not(statFBState = OOP_ReadWriteStatus#FB_ERROR) THEN
+                      IF (statCmdError = TRUE) AND not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                         tempStatusWord.%B0 := tempCmdStatus.%B1;
                         tempStatusWord.%B1 := tempCmdStatus.%B2;
 
@@ -86,25 +86,25 @@ NAMESPACE Simatic.Ax.LAcycCom
                             statStateNumber := statFBSubState;
                             statSubfunctionStatus := tempStatusWord;
                             statStatus := ERR_WRREC_TEMP_COUNTER;
-                            statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                            statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                           ELSE
                             statErrorCount := statErrorCount + uint#1;  // Increment internal error counter
-                            statFBSubStateOld := OOP_ReadWriteStatus#FB_BUSY_WRREC;
-                            statFBSubState := OOP_ReadWriteStatus#FB_BUSY_WAIT;
+                            statFBSubStateOld := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
+                            statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WAIT;
                           END_IF;
                         ELSE
                           statStateNumber := statFBSubState;
                           statSubfunctionStatus := tempStatusWord;
                           statStatus := ERR_WRREC;
-                          statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                          statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                         END_IF;
 
-                      ELSIF (statCmdDone = TRUE) AND not(statFBState = OOP_ReadWriteStatus#FB_ERROR) THEN  // Processing completed without errors
+                      ELSIF (statCmdDone = TRUE) AND not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN  // Processing completed without errors
                         statErrorCount := uint#0;  // V1.5.1 Reset error counter
-                        statFBSubState := OOP_ReadWriteStatus#FB_BUSY_RDREC; // WRREC completed and continue with RDREC
+                        statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_RDREC; // WRREC completed and continue with RDREC
                       END_IF; // statCmdError = TRUE
 
-                      OOP_ReadWriteStatus#FB_BUSY_RDREC:  // Reading the values from the drive object
+                      LAcycCom_ReadWriteStatus#FB_BUSY_RDREC:  // Reading the values from the drive object
                       // Resets RDREC command
                       IF (statCmdBusy = FALSE) THEN
                         instRDREC(REQUEST := FALSE,
@@ -145,21 +145,21 @@ NAMESPACE Simatic.Ax.LAcycCom
                             statStateNumber := statFBSubState;
                             statSubfunctionStatus := tempStatusWord;
                             statStatus := ERR_RDREC_TEMP_COUNTER;
-                            statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                            statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                           ELSE
                             statErrorCount := statErrorCount + uint#1;  // Increment internal error counter
-                            statFBSubStateOld := OOP_ReadWriteStatus#FB_BUSY_RDREC;
+                            statFBSubStateOld := LAcycCom_ReadWriteStatus#FB_BUSY_RDREC;
                             // V1.3.2. If error 80A0 then should be retry with WRREC command
                             IF (tempStatusWord = word#16#80A0) THEN
-                              statFBSubStateOld := OOP_ReadWriteStatus#FB_BUSY_WRREC;
+                              statFBSubStateOld := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
                             END_IF;
-                            statFBSubState := OOP_ReadWriteStatus#FB_BUSY_WAIT;
+                            statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WAIT;
                           END_IF; // statErrorCount >= MAX_ERROR_COUNT
                         ELSE
                           statStateNumber := statFBSubState;
                           statSubfunctionStatus := tempStatusWord;
                           statStatus := ERR_RDREC;
-                          statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                          statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                         END_IF;
 
                         // Error : Reference number of the request does not match with the response reference number
@@ -169,7 +169,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                         statStateNumber := statFBSubState;
                         statStatus := ERR_REFERENCE_NO;
-                        statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                        statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
 
                         // Error : Invalid response from the drive object (reqId: 16#01 - reading parameter successful; 16#81: reading parameter finished with error)
                       ELSIF NOT (statRespParameter.header.reqId = byte#16#81 OR statRespParameter.header.reqId = byte#16#01) AND
@@ -177,7 +177,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                         (tempCmdValid = TRUE) THEN
                         statStateNumber := statFBSubState;
                         statStatus := ERR_RESPONSE_ID;
-                        statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                        statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
 
                         // Error : The received number of parameters does not match with the requested number of parameters
                       ELSIF (statCmdBusy = FALSE) AND
@@ -186,7 +186,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                         statStateNumber := statFBSubState;
                         statStatus := ERR_PARAMETER_NO;
-                        statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                        statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
 
                         // Error : The drive object does not match with the responsed DO
                       ELSIF (statCmdBusy = FALSE) AND
@@ -195,7 +195,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                         statStateNumber := statFBSubState;
                         statStatus := ERR_DRIVE_OBJECT_NO;
-                        statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                        statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
 
                         // No error occurred during reading parameters
                       ELSIF (tempCmdValid = TRUE) THEN
@@ -220,7 +220,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                               statFirstParameterError := tempLoopIndex;
                               statStateNumber := statFBSubState;
                               statStatus := ERR_PARAMETER;
-                              statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                              statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                             END_IF;
                             // Points to the next parameter address
                             tempPointer := tempPointer + 6;
@@ -329,7 +329,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                           FOR tempLoopIndex := 0 TO statCountOfElements - 1 BY 1 DO
                             tempActualElementReal.index := statParameter[tempLoopIndex].index;
                             tempActualElementReal.parameterNumber := statParameter[tempLoopIndex].parameterNo;
-                            tempActualElementReal.value := statParameter[tempLoopIndex].realValue;
+                            tempActualElementReal.Rvalue := statParameter[tempLoopIndex].realValue;
                             tempActualElementReal.DWvalue := statParameter[tempLoopIndex].dwordValue;
                             tempActualElementReal.errorValue := statParameter[tempLoopIndex].errorValue;
                            // tempBlkVariant := MOVE_BLK_VARIANT(SRC := tempActualElementReal, COUNT := 1, SRC_INDEX := 0, DEST_INDEX := tempLoopIndex, DEST => dataset);
@@ -339,21 +339,21 @@ NAMESPACE Simatic.Ax.LAcycCom
                               statStateNumber := statFBSubState;
                               statSubfunctionStatus := TO_WORD(tempBlkVariant);
                               statStatus := ERR_MOVE_BLK_VARIANT;
-                              statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                              statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                               statdiagnostics.firstParameterError := tempLoopIndex;
                             END_IF;
                           END_FOR;
 
 
                         // Next state is depending on the FB mode
-                        IF not(statFBState = OOP_ReadWriteStatus#FB_ERROR) THEN
+                        IF not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                           statStatus := STATUS_RELEASE;
-                          statFBState := OOP_ReadWriteStatus#FB_RELEASE;
+                          statFBState := LAcycCom_ReadWriteStatus#FB_RELEASE;
 
                         END_IF; // statMode = MODE_WITH_BUFFER_MANAGER
                       END_IF; // statCmdError = TRUE
 
-                      OOP_ReadWriteStatus#FB_BUSY_WAIT:
+                      LAcycCom_ReadWriteStatus#FB_BUSY_WAIT:
                       // Timer for temporary errors
                       instIECTimer(signal := statTimerStart,
                                     duration := TIMER_TEMP_ERROR);
@@ -367,13 +367,13 @@ NAMESPACE Simatic.Ax.LAcycCom
                     ELSE
                       statStatus := ERR_UNDEFINED_SUBSTATE;
                       statStateNumber := statFBState;
-                      statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                      statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                   END_CASE;
 
                 ELSE
                   statStatus := ERR_COMMAND_TIMEOUT;
                   statStateNumber := statFBState;
-                  statFBState := OOP_ReadWriteStatus#FB_ERROR;
+                  statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                 END_IF; // ((buffer.element[statAllocatedIndex].enable = TRUE) AND (statMode = MODE_WITH_BUFFER_MANAGER)) OR statMode = MODE_WITHOUT_BUFFER_MANAGER
 
         END_METHOD
@@ -390,8 +390,8 @@ NAMESPACE Simatic.Ax.LAcycCom
              statHwId := hardwareId;
 
              // starts functionality
-             IF not ((statFBState = OOP_ReadWriteStatus#FB_IDLE OR
-                 statFBState = OOP_ReadWriteStatus#FB_DONE) AND
+             IF not ((statFBState = LAcycCom_ReadWriteStatus#FB_IDLE OR
+                 statFBState = LAcycCom_ReadWriteStatus#FB_DONE) AND
                  statrequestBuffer <> NULL) THEN
                    Start := False;
              ELSE
@@ -400,12 +400,12 @@ NAMESPACE Simatic.Ax.LAcycCom
                statAllocatedIndex := -1;
                statSubfunctionStatus :=  word#16#0000;
                statDataRecordNo := dint#0;
-               statStateNumber := OOP_ReadWriteStatus#FB_IDLE;
+               statStateNumber := LAcycCom_ReadWriteStatus#FB_IDLE;
                statDatasetType := SINT#0;
                statFirstParameterError := -1;
                statErrorCount := uint#0;
-               statFBSubState := OOP_ReadWriteStatus#FB_BUSY_WRREC;
-               statFBState := OOP_ReadWriteStatus#FB_FIRST_CYCLE;
+               statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
+               statFBState := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
 
                instIECTimer(signal := FALSE,
                              duration := TIMER_ALLOCATION);
@@ -417,12 +417,12 @@ NAMESPACE Simatic.Ax.LAcycCom
                 z : Int;
             END_VAR
 
-            For z := 0 to typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM do
+            For z := 0 to LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM do
                 dataset[z].DWvalue  := DWORD#0;
                 dataset[z].errorValue := BYTE#0;
                 dataset[z].index    := UINT#0;
                 dataset[z].parameterNumber := UINT#0;
-                dataset[z].value    := real#0.0;
+                dataset[z].Rvalue    := real#0.0;
             end_FOR;
             statCountOfElements := 0;
         End_Method
@@ -435,13 +435,13 @@ NAMESPACE Simatic.Ax.LAcycCom
             VAR_TEMP
                 tempLoopIndex : Int;
             end_VAR
-            If element_no = -1 and statCountOfElements < typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            If element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
                     dataset[statCountOfElements] :=datasetItem;
                 statCountOfElements := statCountOfElements + 1;
                 AddatasetItem := statCountOfElements;
 
             elsif element_no > -1 and
-                element_no < typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM and
+                element_no < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM and
                 element_no <= statCountOfElements Then
                     dataset[element_no] :=datasetItem;
                     If element_no = statCountOfElements Then
@@ -462,7 +462,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                 tempLoopIndex : Int;
             end_VAR
 
-            If element_no >= 0 and element_no <= typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            If element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
                 ReaddatasetItem := dataset[element_no];
             end_if;
 
@@ -476,8 +476,8 @@ NAMESPACE Simatic.Ax.LAcycCom
               tempLoopIndex : Int;
           end_VAR
 
-          If element_no >= 0 and element_no <= typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
-            ReaddatasetValue := dataset[element_no].value;
+          If element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            ReaddatasetValue := dataset[element_no].Rvalue;
           end_if;
 
         End_Method
@@ -490,7 +490,7 @@ NAMESPACE Simatic.Ax.LAcycCom
               tempLoopIndex : Int;
           end_VAR
 
-          If element_no >= 0 and element_no <= typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+          If element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
             ReaddatasetDWValue := dataset[element_no].DWvalue;
           end_if;
 

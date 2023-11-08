@@ -39,7 +39,7 @@ NAMESPACE Simatic.Ax.LAcycCom
     Type LAcycCom_TypestatstatReqParameter
         : Struct   // Request telegram
             header :  LAcycCom_Typestatheader;
-            parameterAddress : Array[0..typeconstantsint#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;
+            parameterAddress : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;
         END_STRUCT;
     END_TYPE
 
@@ -55,21 +55,21 @@ NAMESPACE Simatic.Ax.LAcycCom
     Type LAcycCom_TypestatRespParameter
         : Struct   // Response telegram
             header   : LAcycCom_Typestatheader;
-            data   : Array[0..typeconstantsint#LENGTH_PARAMETER_TELEGRAM_UPPER_LIM] of Byte;   // List of parameter
+            data   : Array[0..LAcycComConstantsInt#LENGTH_PARAMETER_TELEGRAM_UPPER_LIM] of Byte;   // List of parameter
         END_STRUCT;
     END_TYPE
 
     Type LAcycCom_TypestatReqReadParameter
         : Struct   // Request telegram to read the format of parameters
             header   : LAcycCom_Typestatheader;   // Telegram header
-            parameterAddress   : Array[0..typeconstantsint#WRITE_PARAMETERS_UPPER_LIM_SINGLE] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
+            parameterAddress   : Array[0..LAcycComConstantsInt#WRITE_PARAMETERS_UPPER_LIM_SINGLE] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
         END_STRUCT;
     end_Type
 
     Type LAcycCom_TypestatReqWriteParameter
         : Struct   // Response telegram
             header   : LAcycCom_Typestatheader;
-            data   : Array[0..typeconstantsint#LENGTH_WRITE_TELEGRAM_UPPER_LIM] of Byte;   // List of parameter
+            data   : Array[0..LAcycComConstantsInt#LENGTH_WRITE_TELEGRAM_UPPER_LIM] of Byte;   // List of parameter
         END_STRUCT;
     END_TYPE
 

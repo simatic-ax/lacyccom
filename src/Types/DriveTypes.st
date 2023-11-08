@@ -32,7 +32,7 @@ NAMESPACE Simatic.Ax.LAcycCom
          : STRUCT
             status :  Word := word#16#0000;   // Status identifier when error occurred
             subfunctionStatus : Word := word#16#0000;   // Block status or error information
-            stateNumber : OOP_ReadWriteStatus;   // State of the FB when error occurred
+            stateNumber : LAcycCom_ReadWriteStatus;   // State of the FB when error occurred
             driveObjectId : USInt := usint#0;   // Identification number of the drive object
             hardwareId : HW_IO := HW_IO#default;   // Hardware identifier of the hardware module
             parameterCount : Int := 0;   // Total amount of parameters
