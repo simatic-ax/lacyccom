@@ -6,7 +6,13 @@ NAMESPACE Simatic.Ax.LAcycCom
         var Private
             statparameterNumber : UInt;   // Number of the parameter
             statindex : UInt;   // Parameter index
+            statParameter   : Array[0..READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
+            parameterAddress   : Array[0..READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
         end_VAR
+       
+        VAR CONSTANT
+          READ_PARAMETERS_UPPER_LIM : int := 0;
+        end_var
 
         METHOD OVERRIDE BUSY
             VAR_TEMP

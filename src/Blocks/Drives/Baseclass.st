@@ -25,10 +25,8 @@ NAMESPACE Simatic.Ax.LAcycCom
             statAllocatedIndex   : Int := -1;   // Allocated element index in the buffer DB
             statCountOfElements   : Int := 0;   // Number of parameters in the dataset
             statFirstParameterError   : Int := -1;   // Number of parameter at which the error occurred (-1: no parameter with error)
-            statDataRecordNo   : DInt;   // Used data record
-            statParameter   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
+            statDataRecordNo   : DInt;   // Used data record 
             statReqParameter   : LAcycCom_TypestatstatReqParameter;   // Request telegram
-            parameterAddress   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
             statReqParameterInit   : LAcycCom_TypestatparameterAddress :=(attribute := byte#16#10, elementNo  := byte#16#01, parameterNo := uint#0, index := uint#0);
 
             statRespParameter   : LAcycCom_TypestatRespParameter;   // Response telegram
@@ -169,7 +167,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
               // Clearing the sending buffer
               statReqParameter.header := tempVoidHeader;
-              FOR tempLoopIndex := 0 TO LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM DO
+              FOR tempLoopIndex := 0 TO LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM DO
                 statReqParameter.parameterAddress[tempLoopIndex] := statReqParameterInit;
               END_FOR;
 

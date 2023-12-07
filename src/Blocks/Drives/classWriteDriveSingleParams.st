@@ -10,10 +10,13 @@ NAMESPACE Simatic.Ax.LAcycCom
             statParameterDWValue : DWORD;
             statReqWriteParameter  : LAcycCom_TypestatReqWriteParameter;   // Request telegram to change the parameter values
             statReqReadParameter   : LAcycCom_TypestatstatReqParameter;   // Request telegram
+            statParameter   : Array[0..WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
+            parameterAddress   : Array[0..WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
         end_VAR
 
         VAR CONSTANT
          LENGTH_WRITE_TELEGRAM_UPPER_LIM : Int := 227;   // Maximum length of parameter information when using WRREC
+         WRITE_PARAMETERS_UPPER_LIM : int := 0;
        end_var
 
         METHOD OVERRIDE BUSY
