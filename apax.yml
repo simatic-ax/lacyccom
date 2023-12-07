@@ -15,17 +15,18 @@ variables:
     - '--debug'
 targets:
   - '1500'
-  - 'axunit-llvm'
+ # - 'axunit-llvm'
   - 'llvm'
 # Dependencies
 devDependencies:
-  '@ax/sdk': ^4.0.12
+  '@ax/sdk': ^2311.0.1
   "@simatic-ax/snippetscollection": ^0.0.15
 
 dependencies:
-  "@ax/system-timer": ^4.0.1
-  "@ax/simatic-1500-distributedio": ^5.0.20
-  "@ax/system-serde": ^2.0.2
+  "@ax/system-timer": ^6.0.94
+  "@ax/simatic-1500-distributedio": ^6.0.3
+  "@ax/system-serde": ^6.0.94
+  "@ax/apax": ^2.0.0
 
 # Registry information, where the package will be published
 registries:
@@ -37,3 +38,5 @@ files:
   - 'doc'
   - 'src'
   - 'snippets'
+installStrategy: strict
+apaxVersion: 3.0.0
