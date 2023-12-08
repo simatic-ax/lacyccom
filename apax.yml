@@ -15,7 +15,7 @@ variables:
     - '--debug'
 targets:
   - '1500'
- # - 'axunit-llvm'
+  # - 'axunit-llvm'
   - 'llvm'
 # Dependencies
 devDependencies:
@@ -26,7 +26,7 @@ dependencies:
   "@ax/system-timer": ^6.0.94
   "@ax/simatic-1500-distributedio": ^6.0.3
   "@ax/system-serde": ^6.0.94
-  "@ax/apax": ^2.0.0
+  "@ax/apax": ^3.0.0
 
 # Registry information, where the package will be published
 registries:
