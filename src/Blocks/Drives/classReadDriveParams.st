@@ -6,7 +6,9 @@ NAMESPACE Simatic.Ax.LAcycCom
         var Private
             statparameterCount : Int := -1;
             dataset : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
-        end_VAR
+            statParameter   : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
+            parameterAddress   : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
+          end_VAR
 
 
         METHOD OVERRIDE BUSY

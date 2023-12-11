@@ -15,7 +15,7 @@ FUNCTION SerializeBig : UINT
     SerializeBig := offset;
     SerializeBig := LAcycCom.SerializeBig(offset := SerializeBig, value := value.header, buffer := buffer);
     FOR i := 0 TO 227 DO
-        SerializeBig := System.Serde.SerializeBig(offset := SerializeBig, value := value.data[i], buffer := buffer);
+        SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.data[i], buffer := buffer);
     END_FOR;
 END_FUNCTION
 
@@ -33,7 +33,7 @@ FUNCTION DeserializeBig : UINT
     DeserializeBig := offset;
     DeserializeBig := LAcycCom.DeserializeBig(offset := DeserializeBig, value := value.header, buffer := buffer);
     FOR i := 0 TO 227 DO
-        DeserializeBig := System.Serde.DeserializeBig(offset := DeserializeBig, value := value.data[i], buffer := buffer);
+        DeserializeBig := System.Serialization.DeserializeBig(offset := DeserializeBig, value := value.data[i], buffer := buffer);
     END_FOR;
 END_FUNCTION
 END_NAMESPACE

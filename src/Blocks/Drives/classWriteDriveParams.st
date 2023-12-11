@@ -5,9 +5,11 @@ NAMESPACE Simatic.Ax.LAcycCom
     CLASS LAcycCom_classWriteDriveParams EXTENDS ReadWriteParameter
         var Private
             statparameterCount : Int := -1;
-            dataset : Array[0..LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
+            dataset : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
             statReqWriteParameter  : LAcycCom_TypestatReqWriteParameter;   // Request telegram to change the parameter values
             statReqReadParameter   : LAcycCom_TypestatstatReqParameter;   // Request telegram
+            statParameter   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
+            parameterAddress   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
         end_VAR
 
         VAR CONSTANT
