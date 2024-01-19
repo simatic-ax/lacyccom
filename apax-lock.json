@@ -9,8 +9,7 @@
     "dependencies": {
       "@ax/system-timer": "^6.0.94",
       "@ax/simatic-1500-distributedio": "^6.0.3",
-      "@ax/system-serde": "^6.0.94",
-      "@ax/apax": "^3.0.0"
+      "@ax/system-serde": "^6.0.94"
     },
     "devDependencies": {
       "@ax/sdk": "^2311.0.1",
@@ -70,13 +69,6 @@
       "dependencies": {
         "@ax/system-strings": "6.0.94"
       }
-    },
-    "@ax/apax": {
-      "name": "@ax/apax",
-      "version": "3.0.0",
-      "integrity": "sha512-JrTU75WIgtd082JklVuUOHFtJRlW9UKT0l/3uv73dgBri84xURoiMA9zYDAdKkUaL3fk0ridlJJ77SD+ivtiQw==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/apax/-/apax-3.0.0.tgz",
-      "dependencies": {}
     },
     "@ax/axunitst": {
       "name": "@ax/axunitst",

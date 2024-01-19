@@ -26,7 +26,6 @@ dependencies:
   "@ax/system-timer": ^6.0.94
   "@ax/simatic-1500-distributedio": ^6.0.3
   "@ax/system-serde": ^6.0.94
-  "@ax/apax": ^3.0.0
 
 # Registry information, where the package will be published
 registries:
@@ -39,4 +38,4 @@ files:
   - 'src'
   - 'snippets'
 installStrategy: strict
-apaxVersion: 3.0.0
+apaxVersion: 3.1.0
