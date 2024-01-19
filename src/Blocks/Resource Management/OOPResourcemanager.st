@@ -54,7 +54,7 @@ NAMESPACE Simatic.Ax.LAcycCom
         tempQueueElementPrevious : INT;                               // Queue element before current element
         tempQueueElementNext     : INT;                               // Queue element after current element
         tempRetVal               : INT;                               // Return value of system functions
-        tempByte                 : BYTE;                              // Temporary byte variable for slice command
+        tempByte                 : BYTE;                              // Temporary BYTE variable for slice command
         tempStationInUse         : BOOL;                              // Station is already processing with acyclic communication
       END_VAR
       //Check if FB is been disabled
@@ -108,7 +108,7 @@ NAMESPACE Simatic.Ax.LAcycCom
         END_FOR;
         REPEAT
           // Set maximum number of resources from I&M Data
-          instGetIMData(LADDR := word#50, IM_TYPE := UINT#0, DATA := statIM0Data);
+          instGetIMData(LADDR := WORD#50, IM_TYPE := UINT#0, DATA := statIM0Data);
         UNTIL (instGetIMData.DONE) OR (instGetIMData.ERROR) END_REPEAT;
         IF instGetIMData.DONE THEN
           IF (statIM0Data.Order_ID[6] = '2') THEN
@@ -259,7 +259,7 @@ NAMESPACE Simatic.Ax.LAcycCom
               requestBuffer.elements[tempQueueElementNext].queueElementPrevious := tempQueueElementPrevious;
               requestBuffer.elements[tempQueueElementPrevious].queueElementNext := tempQueueElementNext;
             END_IF;
-            requestBuffer.elements[tempActBufferIndex].state := Byte#16#00;
+            requestBuffer.elements[tempActBufferIndex].state := BYTE#16#00;
             requestBuffer.elements[tempActBufferIndex].hardwareId := HW_IO#default;
             requestBuffer.elements[tempActBufferIndex].queueElementPrevious := -1;
             requestBuffer.elements[tempActBufferIndex].queueElementNext := -1;
@@ -445,7 +445,7 @@ NAMESPACE Simatic.Ax.LAcycCom
       IF (requestBuffer.header.lockBuffer = FALSE) AND (requestBuffer.header.nextFreeElement >= 0) AND (requestBuffer.header.nextFreeElement <= LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
         requestBuffer.header.lockBuffer := TRUE;
         Allocate := requestBuffer.header.nextFreeElement;
-        requestBuffer.elements[Allocate].state := byte#16#00;
+        requestBuffer.elements[Allocate].state := BYTE#16#00;
         requestBuffer.elements[Allocate].state.%X0 := TRUE;
         requestBuffer.elements[Allocate].hardwareId := hardwareId;
         requestBuffer.elements[Allocate].queueElementNext := -1;

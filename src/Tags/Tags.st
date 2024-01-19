@@ -13,7 +13,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 		);		
 	END_TYPE
 
-	type LAcycComConstantsByte : byte (
+	type LAcycComConstantsByte : BYTE (
 		LACYCCOM_NO_COMMAND :=	BYTE#16#00,
 		LACYCCOM_READ_COMMAND :=	BYTE#16#01,
 		LACYCCOM_WRITE_COMMAND :=	BYTE#16#02

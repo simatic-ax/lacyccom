@@ -40,13 +40,13 @@ PROGRAM MyProgram
         WriteParameter          : LAcycCom_classWriteDriveParams;
         ReadParameter           : LAcycCom_classReadDriveParams;
         diagnostic : LAcycCom_ooptypeDrivediagnostics;
-        RVALUEp304 : real;
-        RVALUEp305 : real;
-        RVALUEp310 : real;
-        FirstCycle : Bool := TRUE;
+        RVALUEp304 : REAL;
+        RVALUEp305 : REAL;
+        RVALUEp310 : REAL;
+        FirstCycle : BOOL := TRUE;
         datasetitemread : LAcycCom_typeDriveDataset;
         datasetitemwrite : LAcycCom_typeDriveDataset;
-        elements : int;
+        elements : INT;
     END_VAR
 
     Resourcemanager.execute();
@@ -68,16 +68,16 @@ PROGRAM MyProgram
             ;
 
         LAcycComstateDef#IDLE :
-            datasetitemread.parameterNumber := uint#304;
+            datasetitemread.parameterNumber := UINT#304;
             elements := ReadParameter.AddatasetItem(datasetItem := datasetitemread,
                                                     element_no  := -1);
 
-            datasetitemread.parameterNumber := uint#305;
+            datasetitemread.parameterNumber := UINT#305;
             elements := ReadParameter.AddatasetItem(datasetItem := datasetitemread,
                                                      element_no := -1);
 
-            ReadParameter.Start(driveObjectId  := uint#5,
-                                hardwareId     := word#269);
+            ReadParameter.Start(driveObjectId  := UINT#5,
+                                hardwareId     := WORD#269);
 
         LAcycComstateDef#DONE :
             datasetitemread := ReadParameter.ReaddatasetItem(element_no := 0);
@@ -94,10 +94,10 @@ PROGRAM MyProgram
             ;
 
         LAcycComstateDef#IDLE :
-            ReadParameterSingle.Start(  driveObjectId      := uint#5,
-                                        hardwareId         := word#269,
-                                        parameterNumber    := uint#310,
-                                        index              := uint#0);
+            ReadParameterSingle.Start(  driveObjectId      := UINT#5,
+                                        hardwareId         := WORD#269,
+                                        parameterNumber    := UINT#310,
+                                        index              := UINT#0);
 
         LAcycComstateDef#DONE :
         RVALUEp310 := ReadParameterSingle.GetValueREAL();
@@ -112,18 +112,18 @@ PROGRAM MyProgram
 
         LAcycComstateDef#IDLE :
 
-            datasetitemwrite.parameterNumber := uint#2900;
-            datasetitemwrite.Rvalue  := real#12.3;
+            datasetitemwrite.parameterNumber := UINT#2900;
+            datasetitemwrite.Rvalue  := REAL#12.3;
             elements := WriteParameter.AddatasetItem(datasetItem := datasetitemwrite,
                                                       element_no := -1);
 
-            datasetitemwrite.parameterNumber := uint#2901;
-            datasetitemwrite.Rvalue  := real#45.6;
+            datasetitemwrite.parameterNumber := UINT#2901;
+            datasetitemwrite.Rvalue  := REAL#45.6;
             elements := WriteParameter.AddatasetItem(datasetItem := datasetitemwrite,
                                                     element_no   := -1);
 
-            WriteParameter.Start(driveObjectId  := uint#5,
-                                 hardwareId     := word#269);
+            WriteParameter.Start(driveObjectId  := UINT#5,
+                                 hardwareId     := WORD#269);
 
         LAcycComstateDef#DONE :
             ;
@@ -137,11 +137,11 @@ PROGRAM MyProgram
             ;
 
         LAcycComstateDef#IDLE :
-        WriteParameterSingle.Start( driveObjectId   := uint#5,
-                                    hardwareId      := word#269,
-                                    parameterNumber := uint#2930,
+        WriteParameterSingle.Start( driveObjectId   := UINT#5,
+                                    hardwareId      := WORD#269,
+                                    parameterNumber := UINT#2930,
                                     value           := REAL#78.9,
-                                    index           := uint#0);
+                                    index           := UINT#0);
 
         LAcycComstateDef#DONE :
             ;

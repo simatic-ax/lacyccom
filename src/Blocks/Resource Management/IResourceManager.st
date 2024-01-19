@@ -2,7 +2,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
     INTERFACE IResourcemanager
     
-        METHOD Allocate : Int //AllocatedIndex
+        METHOD Allocate : INT //AllocatedIndex
             VAR_INPUT
                 hardwareId : HW_IO; // Hardware identifier of the hardware module
             END_VAR

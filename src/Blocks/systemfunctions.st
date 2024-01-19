@@ -3,17 +3,17 @@ using system.DateTime;
 
 NAMESPACE Simatic.Ax.LAcycCom
     TYPE typeGEOADDR : STRUCT
-            HWTYPE  : Uint;
-            AREA    : Uint;
-            IOSYSTEM: Uint;
-            STATION : Uint;
-            SLOT    : Uint;
-            SUBSLOT : Uint;
+            HWTYPE  : UINT;
+            AREA    : UINT;
+            IOSYSTEM: UINT;
+            STATION : UINT;
+            SLOT    : UINT;
+            SUBSLOT : UINT;
         END_STRUCT;
     END_TYPE
 
     TYPE TypeSoftware_Revision : STRUCT
-            Functional : Int := 3;
+            Functional : INT := 3;
         END_STRUCT;
     END_TYPE
 
@@ -26,14 +26,14 @@ NAMESPACE Simatic.Ax.LAcycCom
     FUNCTION_BLOCK Get_IM_Data
         VAR_INPUT
             LADDR	:HW_IO;
-            IM_TYPE	:UInt;
+            IM_TYPE	:UINT;
         end_VAR
 
         VAR_OUTPUT
-            DONE	:Bool;
-            BUSY	:Bool;
-            ERROR	:Bool;
-            STATUS	:Word;
+            DONE	:BOOL;
+            BUSY	:BOOL;
+            ERROR	:BOOL;
+            STATUS	:WORD;
         end_var
         VAR_IN_OUT
             DATA  : Typedata;
@@ -42,11 +42,11 @@ NAMESPACE Simatic.Ax.LAcycCom
         DONE    := True;
         BUSY    := false;
         ERROR   := False;
-        STATUS  := word#0;
+        STATUS  := WORD#0;
 
     END_FUNCTION_BLOCK
 
-    FUNCTION LOG2GEO : int
+    FUNCTION LOG2GEO : INT
         VAR_INPUT
             LADDR : HW_IO;
         END_VAR
@@ -54,8 +54,8 @@ NAMESPACE Simatic.Ax.LAcycCom
             GEOADDR : typeGEOADDR;
         end_var
 
-            GEOADDR.IOSYSTEM := uint#1;
-            GEOADDR.STATION := uint#1;
+            GEOADDR.IOSYSTEM := UINT#1;
+            GEOADDR.STATION := UINT#1;
 
             LOG2GEO :=0;
     END_FUNCTION

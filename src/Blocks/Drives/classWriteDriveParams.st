@@ -4,31 +4,31 @@ using siemens.Simatic.S71500.DistributedIO;
 NAMESPACE Simatic.Ax.LAcycCom
     CLASS LAcycCom_classWriteDriveParams EXTENDS ReadWriteParameter
         var Private
-            statparameterCount : Int := -1;
-            dataset : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;   // Dataset with all parameters to be read
-            statReqWriteParameter  : LAcycCom_TypestatReqWriteParameter;   // Request telegram to change the parameter values
-            statReqReadParameter   : LAcycCom_TypestatstatReqParameter;   // Request telegram
-            statParameter   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;   // Parameter dataset
-            parameterAddress   : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;   // Parameter data in telegram
+            statparameterCount    : INT := -1;
+            dataset               : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_typeDriveDataset;          // Dataset with all parameters to be read
+            statReqWriteParameter : LAcycCom_TypestatReqWriteParameter;                                                                       // Request telegram to change the parameter values
+            statReqReadParameter  : LAcycCom_TypestatstatReqParameter;                                                                        // Request telegram
+            statParameter         : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatstatParameter;     // Parameter dataset
+            parameterAddress      : Array[0..LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM] of LAcycCom_TypestatparameterAddress;  // Parameter data in telegram
         end_VAR
 
         VAR CONSTANT
-          WRITE_PARAMETERS_UPPER_LIM : Int := 18;   // Maximum count of parameters
-          LENGTH_WRITE_TELEGRAM_UPPER_LIM : Int := 227;   // Maximum length of parameter information when using WRREC
+          WRITE_PARAMETERS_UPPER_LIM : INT := 18;   // Maximum count of parameters
+          LENGTH_WRITE_TELEGRAM_UPPER_LIM : INT := 227;   // Maximum length of parameter information when using WRREC
         end_var
 
         METHOD OVERRIDE BUSY
             VAR_TEMP
-                tempCmdValid : Bool;   // TRUE: New data record was received and is valid
-                tempStatusWord : Word;   // Temporary status
-                tempWord : Word;   // Temporary word variable
-                tempPointer : Int;   // Temporary pointer variable
-                tempLoopIndex : Int;   // Temporary loop index variable
-                tempBlkVariant : Int;   // Temporary result of MOVE_BLK_VARIANT
-                tempCmdStatus : DWord;   // Temporary status of WRREC and RDREC command
-                tempDWord : DWord;   // Temporary DWord variable
-                tempVoidHeader : LAcycCom_Typestatheader;   // Temporary empty header structure
-                tempActualElementReal : LAcycCom_typeDriveDataset;   // Temporary element of the dataset (real values)
+                tempCmdValid          : BOOL;                       // TRUE: New data record was received and is valid
+                tempStatusWord        : WORD;                       // Temporary status
+                tempWord              : WORD;                       // Temporary WORD variable
+                tempPointer           : INT;                        // Temporary pointer variable
+                tempLoopIndex         : INT;                        // Temporary loop index variable
+                tempBlkVariant        : INT;                        // Temporary result of MOVE_BLK_VARIANT
+                tempCmdStatus         : DWORD;                      // Temporary status of WRREC and RDREC command
+                tempDWord             : DWORD;                      // Temporary DWORD variable
+                tempVoidHeader        : LAcycCom_Typestatheader;    // Temporary empty header structure
+                tempActualElementReal : LAcycCom_typeDriveDataset;  // Temporary element of the dataset (REAL values)
              END_VAR
              IF (statrequestBuffer.GetRessource(statAllocatedIndex)=LAcycCom_ResourceManagerRetval#STATUS_BUSY) THEN
                 CASE statFBSubState OF
@@ -45,23 +45,23 @@ NAMESPACE Simatic.Ax.LAcycCom
                       // Clearing the sending write buffer
                       statReqWriteParameter.header := tempVoidHeader;
                       FOR tempLoopIndex := 0 TO LENGTH_WRITE_TELEGRAM_UPPER_LIM DO
-                      statReqWriteParameter.data[tempLoopIndex] := byte#16#00;
+                      statReqWriteParameter.data[tempLoopIndex] := BYTE#16#00;
                       END_FOR;
 
                       // Clearing the receive buffer
                       statRespParameter.header := tempVoidHeader;
                       FOR tempLoopIndex := 0 TO LENGTH_READ_TELEGRAM_UPPER_LIM DO
-                      statRespParameter.data[tempLoopIndex] := byte#16#00;
+                      statRespParameter.data[tempLoopIndex] := BYTE#16#00;
                       END_FOR;
 
                       // Initialization after start, depending on the used PLC data type
                       IF (statDatasetType = DATA_TYPE_DATASET_REAL) OR (statDatasetType = DATA_TYPE_DATASET_DWORD) THEN
-                        IF statDoId < byte#0 THEN // V1.5
+                        IF statDoId < BYTE#0 THEN // V1.5
                         statDataRecordNo := 16#B02E; // Base Mode Parameter Access local; doId not relevant
-                        statDoId := byte#0;
+                        statDoId := BYTE#0;
 
                         ELSIF (statDoId <= to_byte(MAX_DRIVE_OBJECT_NO))
-                          AND (statDoId <> byte#0)
+                          AND (statDoId <> BYTE#0)
                         THEN // V1.5.2
                         statDataRecordNo := 47; // Data record 47; Base Mode Parameter Access global
 
@@ -76,7 +76,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                         ;
                       END_IF;
                       FOR tempLoopIndex := 0 TO LENGTH_WRITE_TELEGRAM_UPPER_LIM DO
-                         atmpRec[tempLoopIndex] := byte#0;
+                         atmpRec[tempLoopIndex] := BYTE#0;
                       END_FOR;
 
                     LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1, LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2:  // Writing the dataset configuration into the drive object
@@ -88,7 +88,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                       // Creating header data
                      statReqReadParameter.header.refNo := statRefNo; // Telegram reference number
-                     statReqReadParameter.header.reqId := byte#16#01;  // 0x01 = request parameters
+                     statReqReadParameter.header.reqId := BYTE#16#01;  // 0x01 = request parameters
                      statReqReadParameter.header.doId := statDoId;  // Drive object identification number
                      statReqReadParameter.header.parameterNo := TO_BYTE(statCountOfElements);  // Count of parameters
 
@@ -96,7 +96,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                         FOR tempLoopIndex := 0 TO statCountOfElements - 1 BY 1 DO
                          tempActualElementReal:= dataset[tempLoopIndex];
-                         statParameter[tempLoopIndex].index := uint#0;
+                         statParameter[tempLoopIndex].index := UINT#0;
                          statParameter[tempLoopIndex].parameterNo := tempActualElementReal.parameterNumber;
                          statParameter[tempLoopIndex].realValue := tempActualElementReal.Rvalue;
                          statParameter[tempLoopIndex].dwordValue := tempActualElementReal.DWvalue;
@@ -113,13 +113,13 @@ NAMESPACE Simatic.Ax.LAcycCom
                        tempPointer := 0;
                       // Creating header data
                      statReqWriteParameter.header.refNo := statRefNo; // Telegram reference number
-                     statReqWriteParameter.header.reqId := byte#16#02;  // 0x02 = change parameters
+                     statReqWriteParameter.header.reqId := BYTE#16#02;  // 0x02 = change parameters
                      statReqWriteParameter.header.doId := statDoId;  // Drive object identification number
                      statReqWriteParameter.header.parameterNo := TO_BYTE(statCountOfElements);  // Count of parameters
 
                       FOR tempLoopIndex := 0 TO statCountOfElements - 1 BY 1 DO
-                       statReqWriteParameter.data [tempPointer] := byte#16#10; // Attribute of parameters (0x10=Value, 0x30=Text)
-                       statReqWriteParameter.data [tempPointer + 1] := byte#16#01; // No. of elements (for single elements=1)
+                       statReqWriteParameter.data [tempPointer] := BYTE#16#10; // Attribute of parameters (0x10=Value, 0x30=Text)
+                       statReqWriteParameter.data [tempPointer + 1] := BYTE#16#01; // No. of elements (for single elements=1)
 
 
                         // Parameter number
@@ -142,7 +142,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                         END_IF;
 
                        statReqWriteParameter.data [tempPointer] := statParameter[tempLoopIndex].format; // Format of parameter
-                       statReqWriteParameter.data [tempPointer + 1] := byte#16#01; // Count of values
+                       statReqWriteParameter.data [tempPointer + 1] := BYTE#16#01; // Count of values
 
                         CASE TO_SINT(statParameter[tempLoopIndex].format) OF
                           FORMAT_INTEGER_8:
@@ -266,39 +266,39 @@ NAMESPACE Simatic.Ax.LAcycCom
                       END_FOR; // // Creating parameter address
                     END_IF; // statCmdBusy = FALSE AND statParameterConfig = TRUE
 
-                    SerializeBig(uint#0,
+                    SerializeBig(UINT#0,
                     statReqReadParameter,
                     atmpSend );
 
                     IF (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
-                      SerializeBig(uint#0,
+                      SerializeBig(UINT#0,
                         statReqReadParameter,
                         atmpSend );
                       // WRREC command
                       instWRREC(REQUEST := TRUE,                                                // Transfer data record
-                                 ID := statHwId,                                                // ID number of the hardware component
-                                 INDEX := statDataRecordNo,                                                    // Data record number
-                                 LENGTH := uint#0,                                                       // Maximum length of the data record to be transferred in bytes
-                                 DONE => statCmdDone,                                           // Data record was transferred
-                                 BUSY => statCmdBusy,                                           // The writing process is not yet complete
-                                 ERROR => statCmdError,                                         // An error occurred during the writing process
-                                 STATUS =>  tempCmdStatus,                                       // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                                 RECORD := atmpSend);                               // Data record
+                                 ID     := statHwId,           // ID number of the hardware component
+                                 INDEX  := statDataRecordNo,   // Data record number
+                                 LENGTH := UINT#0,             // Maximum length of the data record to be transferred in bytes
+                                 DONE   => statCmdDone,        // Data record was transferred
+                                 BUSY   => statCmdBusy,        // The writing process is not yet complete
+                                 ERROR  => statCmdError,       // An error occurred during the writing process
+                                 STATUS =>  tempCmdStatus,     // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
+                                 RECORD := atmpSend);          // Data record
 
                     ELSIF (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
-                      SerializeBig(uint#0,
+                      SerializeBig(UINT#0,
                         statReqWriteParameter,
                         atmpSend );
                         // WRREC command
                       instWRREC(REQUEST := TRUE,                                                // Transfer data record
-                                 ID := statHwId,                                                // ID number of the hardware component
-                                 INDEX := statDataRecordNo,                                                    // Data record number
-                                 LENGTH := uint#0,                                                       // Maximum length of the data record to be transferred in bytes
-                                 DONE => statCmdDone,                                           // Data record was transferred
-                                 BUSY => statCmdBusy,                                           // The writing process is not yet complete
-                                 ERROR => statCmdError,                                         // An error occurred during the writing process
-                                 STATUS =>  tempCmdStatus,                                       // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                                 RECORD := atmpSend);                              // Data record
+                                 ID     := statHwId,           // ID number of the hardware component
+                                 INDEX  := statDataRecordNo,   // Data record number
+                                 LENGTH := UINT#0,             // Maximum length of the data record to be transferred in bytes
+                                 DONE   => statCmdDone,        // Data record was transferred
+                                 BUSY   => statCmdBusy,        // The writing process is not yet complete
+                                 ERROR  => statCmdError,       // An error occurred during the writing process
+                                 STATUS =>  tempCmdStatus,     // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
+                                 RECORD := atmpSend);          // Data record
                     END_IF;
 
 
@@ -309,14 +309,14 @@ NAMESPACE Simatic.Ax.LAcycCom
                        tempStatusWord.%B1 := tempCmdStatus.%B2;
 
                       // Temporary command status (80A1, 80A7, 80B5, 80C0, 80C1, 80C2, 80C3 oder 80C4) are valid and retry command
-                      IF (tempStatusWord = word#16#80A1) OR  // Negative acknowledgment when writing to the module
-                        (tempStatusWord = word#16#80A7) OR   // DP slave or module is occupied (temporary error)
-                        (tempStatusWord = word#16#80B5) OR   // DP slave or module not ready
-                        (tempStatusWord = word#16#80C0) OR   // The data can only be written when the CPU is in STOP mode. Note: this means that writing by the user program is not possible. You can only write the data online with PG/PC.
-                        (tempStatusWord = word#16#80C1) OR   // The data of the previous write job on the module for the same data record have not yet been processed by the module.
-                        (tempStatusWord = word#16#80C2) OR   // The module is currently processing the maximum possible number of jobs for a CPU.
-                        (tempStatusWord = word#16#80C3) OR   // The required operating resources are currently occupied.
-                        (tempStatusWord = word#16#80C4) THEN // Internal temporary error. Job could not be executed. Repeat the job. If this error occurs often, check your installation for sources of electrical interference.
+                      IF (tempStatusWord = WORD#16#80A1) OR  // Negative acknowledgment when writing to the module
+                        (tempStatusWord = WORD#16#80A7) OR   // DP slave or module is occupied (temporary error)
+                        (tempStatusWord = WORD#16#80B5) OR   // DP slave or module not ready
+                        (tempStatusWord = WORD#16#80C0) OR   // The data can only be written when the CPU is in STOP mode. Note: this means that writing by the user program is not possible. You can only write the data online with PG/PC.
+                        (tempStatusWord = WORD#16#80C1) OR   // The data of the previous write job on the module for the same data record have not yet been processed by the module.
+                        (tempStatusWord = WORD#16#80C2) OR   // The module is currently processing the maximum possible number of jobs for a CPU.
+                        (tempStatusWord = WORD#16#80C3) OR   // The required operating resources are currently occupied.
+                        (tempStatusWord = WORD#16#80C4) THEN // Internal temporary error. Job could not be executed. Repeat the job. If this error occurs often, check your installation for sources of electrical interference.
 
                         IF (statErrorCount >= MAX_ERROR_COUNT) THEN
                          statStateNumber := statFBSubState;
@@ -324,7 +324,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                          statStatus := ERR_WRREC_TEMP_COUNTER;
                          statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                         ELSE
-                         statErrorCount := statErrorCount + uint#1;  // Increment internal error counter
+                         statErrorCount := statErrorCount + UINT#1;  // Increment internal error counter
                          statFBSubStateOld := statFBSubState;
                          statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WAIT;
                         END_IF;
@@ -336,16 +336,16 @@ NAMESPACE Simatic.Ax.LAcycCom
                       END_IF; // Temporary command status (80A1, 80A7, 80B5, 80C0, 80C1, 80C2, 80C3 oder 80C4) are valid and retry command
 
                     ELSIF (statCmdBusy = FALSE) AND (statCmdDone = TRUE) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) AND (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1) THEN  // Processing completed without errors
-                     statErrorCount := uint#0;  // V1.5.1 Reset error counter
+                     statErrorCount := UINT#0;  // V1.5.1 Reset error counter
                      statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_1; // WRREC completed and continue with RDREC
 
                     ELSIF (statCmdBusy = FALSE) AND (statCmdDone = TRUE) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) AND (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2) THEN  // Processing completed without errors
-                     statErrorCount := uint#0;  // V1.5.1 Reset error counter
+                     statErrorCount := UINT#0;  // V1.5.1 Reset error counter
                      statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_2; // WRREC completed and continue with RDREC
                       // Clearing the receive buffer
                      statRespParameter.header := tempVoidHeader;
                       FOR tempLoopIndex := 0 TO LENGTH_READ_TELEGRAM_UPPER_LIM DO
-                       statRespParameter.data[tempLoopIndex] := byte#16#00;
+                       statRespParameter.data[tempLoopIndex] := BYTE#16#00;
                       END_FOR;
                     END_IF; // statCmdError = TRUE
 
@@ -359,16 +359,16 @@ NAMESPACE Simatic.Ax.LAcycCom
                     END_IF;
 
                     instRDREC(request := TRUE,                                                 // Transfer data record
-                               ID := statHwId,                                                 // ID number of the hardware component
-                               INDEX := statDataRecordNo,                                                     // Data record number
-                               MAXLENGTH := uint#0,                                                        // Maximum length in bytes of the data record information to be read
-                               VALID =>  tempCmdValid,                                          // New data record was received and is valid
-                               BUSY => statCmdBusy,                                            // The reading process is not yet complete
-                               ERROR => statCmdError,                                          // An error occurred during the reading process
-                               STATUS =>  tempCmdStatus,                                        // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                               RECORD := atmpRec);                                   // Destination area for the data record read
+                               ID        := statHwId,           // ID number of the hardware component
+                               INDEX     := statDataRecordNo,   // Data record number
+                               MAXLENGTH := UINT#0,             // Maximum length in bytes of the data record information to be read
+                               VALID     =>  tempCmdValid,      // New data record was received and is valid
+                               BUSY      => statCmdBusy,        // The reading process is not yet complete
+                               ERROR     => statCmdError,       // An error occurred during the reading process
+                               STATUS    =>  tempCmdStatus,     // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
+                               RECORD    := atmpRec);           // Destination area for the data record read
 
-                    DeserializeBig(uint#0,
+                    DeserializeBig(UINT#0,
                                 atmpRec,
                                 statRespParameter);
 
@@ -379,14 +379,14 @@ NAMESPACE Simatic.Ax.LAcycCom
                        tempStatusWord.%B1 := tempCmdStatus.%B2;
 
                       // Temporary command status (80A0, 80A7, 80B5, 80C0, 80C1, 80C2, 80C3 oder 80C4) are valid and retry command
-                      IF (tempStatusWord = word#16#80A0) OR  // Negative acknowledgment when reading the module
-                        (tempStatusWord = word#16#80A7) OR   // DP slave or module is occupied (temporary error)
-                        (tempStatusWord = word#16#80B5) OR   // DP slave or module not ready
-                        (tempStatusWord = word#16#80C0) OR   // The data can only be written when the CPU is in STOP mode. Note: this means that writing by the user program is not possible. You can only write the data online with PG/PC.
-                        (tempStatusWord = word#16#80C1) OR   // The data of the previous write job on the module for the same data record have not yet been processed by the module.
-                        (tempStatusWord = word#16#80C2) OR   // The module is currently processing the maximum possible number of jobs for a CPU.
-                        (tempStatusWord = word#16#80C3) OR   // The required operating resources are currently occupied.
-                        (tempStatusWord = word#16#80C4) THEN // Internal temporary error. Job could not be executed. Repeat the job. If this error occurs often, check your installation for sources of electrical interference.
+                      IF (tempStatusWord = WORD#16#80A0) OR  // Negative acknowledgment when reading the module
+                        (tempStatusWord = WORD#16#80A7) OR   // DP slave or module is occupied (temporary error)
+                        (tempStatusWord = WORD#16#80B5) OR   // DP slave or module not ready
+                        (tempStatusWord = WORD#16#80C0) OR   // The data can only be written when the CPU is in STOP mode. Note: this means that writing by the user program is not possible. You can only write the data online with PG/PC.
+                        (tempStatusWord = WORD#16#80C1) OR   // The data of the previous write job on the module for the same data record have not yet been processed by the module.
+                        (tempStatusWord = WORD#16#80C2) OR   // The module is currently processing the maximum possible number of jobs for a CPU.
+                        (tempStatusWord = WORD#16#80C3) OR   // The required operating resources are currently occupied.
+                        (tempStatusWord = WORD#16#80C4) THEN // Internal temporary error. Job could not be executed. Repeat the job. If this error occurs often, check your installation for sources of electrical interference.
 
 
                         IF (statErrorCount >= MAX_ERROR_COUNT) THEN
@@ -396,12 +396,12 @@ NAMESPACE Simatic.Ax.LAcycCom
                          statStatus := ERR_RDREC_TEMP_COUNTER;
                          statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
                         ELSE
-                         statErrorCount := statErrorCount + uint#1;  // Increment internal error counter
+                         statErrorCount := statErrorCount + UINT#1;  // Increment internal error counter
                          statFBSubStateOld := statFBSubState;
                           // V1.3.2. If error 80A0 then should be retry with WRREC command
-                          IF (tempStatusWord = word#16#80A0) AND statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_1 THEN
+                          IF (tempStatusWord = WORD#16#80A0) AND statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_1 THEN
                            statFBSubStateOld := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1;
-                          ELSIF (tempStatusWord = word#16#80A0) AND statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_2 THEN
+                          ELSIF (tempStatusWord = WORD#16#80A0) AND statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_RDREC_2 THEN
                            statFBSubStateOld := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2;
                           END_IF;
                          statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WAIT;
@@ -426,7 +426,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                       // Error : Invalid response from the drive object (reqId: 16#01 - reading parameter successful; 16#81: reading parameter finished with error; 16#02: writing parameter sucessful; 16#82: writing parameter finished with error)
                     ELSIF (statCmdBusy = FALSE) AND
-                      NOT (statRespParameter.header.reqId = byte#16#81 OR statRespParameter.header.reqId = byte#16#01 OR statRespParameter.header.reqId = byte#16#02 OR statRespParameter.header.reqId = byte#16#82) AND
+                      NOT (statRespParameter.header.reqId = BYTE#16#81 OR statRespParameter.header.reqId = BYTE#16#01 OR statRespParameter.header.reqId = BYTE#16#02 OR statRespParameter.header.reqId = BYTE#16#82) AND
                       (tempCmdValid = TRUE) THEN
 
 
@@ -479,11 +479,11 @@ NAMESPACE Simatic.Ax.LAcycCom
                           ELSE
                             CASE TO_SINT(statRespParameter.data [tempPointer]) OF
                               FORMAT_INTEGER_8, FORMAT_UNSIGNED_8, FORMAT_BYTE, FORMAT_INTEGER_16, FORMAT_UNSIGNED_16, FORMAT_OCTET_STRING, FORMAT_WORD:
-                               statParameter[tempLoopIndex].errorValue := byte#16#FF; // Sets the error status and diagnostic
+                               statParameter[tempLoopIndex].errorValue := BYTE#16#FF; // Sets the error status and diagnostic
                                  tempPointer := tempPointer + 4; // Points to the next parameter address
 
                               FORMAT_INTEGER_32, FORMAT_UNSIGNED_32, FORMAT_TIME_DIFFERENCE, FORMAT_FLOATING_POINT, FORMAT_DOUBLE_WORD:
-                               statParameter[tempLoopIndex].errorValue := byte#16#FF; // Sets the error status and diagnostics
+                               statParameter[tempLoopIndex].errorValue := BYTE#16#FF; // Sets the error status and diagnostics
                                  tempPointer := tempPointer + 6; // Points to the next parameter address
 
                               ELSE
@@ -499,7 +499,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                       ELSE
 
                         // Error occurred during writing process (changing parameter values)
-                        IF (statRespParameter.header.reqId = byte#16#82) THEN  // reqId: 16#82 (Error occurred during writing paramaters)
+                        IF (statRespParameter.header.reqId = BYTE#16#82) THEN  // reqId: 16#82 (Error occurred during writing paramaters)
                            tempPointer := 0;
 
                           FOR tempLoopIndex := 0 TO statCountOfElements - 1 BY 1 DO
@@ -522,7 +522,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                               // Parameter without errors
                             ELSE
-                             statParameter[tempLoopIndex].errorValue := byte#16#FF;
+                             statParameter[tempLoopIndex].errorValue := BYTE#16#FF;
                                tempPointer := tempPointer + 2;
                             END_IF;
                             dataset[tempLoopIndex]:=tempActualElementReal;
@@ -569,12 +569,12 @@ NAMESPACE Simatic.Ax.LAcycCom
 
         END_METHOD
 // TODO config in Start ausser requestBuffer
-        METHOD PUBLIC Start : bool
+        METHOD PUBLIC Start : BOOL
 
             VAR_INPUT
-                driveObjectId  : UInt := UINT#0;   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                hardwareId : HW_IO;   // Hardware identifier of the hardware module
-                parameterCount : Int := -1;   // Count of parameters to read (-1: read all parameter in dataset)
+                driveObjectId  : UINT := UINT#0;  // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
+                hardwareId     : HW_IO;           // Hardware identifier of the hardware module
+                parameterCount : INT := -1;       // Count of parameters to read (-1: read all parameter in dataset)
             END_VAR
 
              statparameterCount := parameterCount;
@@ -588,16 +588,16 @@ NAMESPACE Simatic.Ax.LAcycCom
                    Start := False;
              ELSE
                // Initialisation
-               Start := TRUE;
-               statAllocatedIndex := -1;
-               statSubfunctionStatus :=  word#16#0000;
-               statDataRecordNo := dint#0;
-               statStateNumber := LAcycCom_ReadWriteStatus#FB_IDLE;
-               statDatasetType := SINT#0;
+               Start                   := TRUE;
+               statAllocatedIndex      := -1;
+               statSubfunctionStatus   := WORD#16#0000;
+               statDataRecordNo        := DINT#0;
+               statStateNumber         := LAcycCom_ReadWriteStatus#FB_IDLE;
+               statDatasetType         := SINT#0;
                statFirstParameterError := -1;
-               statErrorCount := uint#0;
-               statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
-               statFBState := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
+               statErrorCount          := UINT#0;
+               statFBSubState          := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
+               statFBState             := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
 
                instIECTimer(signal := FALSE,
                              duration := TIMER_ALLOCATION);
@@ -606,9 +606,9 @@ NAMESPACE Simatic.Ax.LAcycCom
              END_IF;
         END_METHOD
 
-        Method public DeleteList : bool
+        Method public DeleteList : BOOL
             Var
-                z : Int;
+                z : INT;
             END_VAR
 
             For z := 0 to LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM do
@@ -616,18 +616,18 @@ NAMESPACE Simatic.Ax.LAcycCom
                 dataset[z].errorValue := BYTE#0;
                 dataset[z].index    := UINT#0;
                 dataset[z].parameterNumber := UINT#0;
-                dataset[z].Rvalue    := real#0.0;
+                dataset[z].Rvalue    := REAL#0.0;
             end_FOR;
 
         End_Method
 
-        Method public AddatasetItem : int //Rückgabewert = anzahl der Listeneinträge
+        Method public AddatasetItem : INT //Rückgabewert = anzahl der Listeneinträge
             VAR_INPUT
                 datasetItem : LAcycCom_typeDriveDataset;
-                element_no  : int := int#-1; //-1 element an die liste anhängen. >=0 element überschreiben
+                element_no  : INT := INT#-1; //-1 element an die liste anhängen. >=0 element überschreiben
             end_VAR
             VAR_TEMP
-                tempLoopIndex : Int;
+                tempLoopIndex : INT;
             end_VAR
             If element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
                     dataset[statCountOfElements] :=datasetItem;
