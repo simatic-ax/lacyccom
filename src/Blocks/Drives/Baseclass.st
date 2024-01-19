@@ -5,7 +5,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
     CLASS ABSTRACT ReadWriteParameter
         VAR
-            statrequestBuffer : Resourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
+            statrequestBuffer : IResourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
             statdiagnostics   : LAcycCom_ooptypeDrivediagnostics;   // statdiagnostics structure
             statTimerStart   : Bool := FALSE;   // TRUE: Starts IEC-Timer
             statCmdBusy   : Bool := FALSE;   // TRUE: Process is not yet complete
@@ -329,7 +329,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
         METHOD PUBLIC FINAL Config : Bool
           VAR_INPUT
-              requestBuffer : Resourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
+              requestBuffer : IResourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
            END_VAR
 
            statrequestBuffer := requestBuffer;

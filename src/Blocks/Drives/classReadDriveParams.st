@@ -429,7 +429,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             statCountOfElements := 0;
         End_Method
 
-        Method public AddatasetItem : int //Rückgabewert = anzahl der Listeneinträge
+        Method public AddDatasetItem : int //Rückgabewert = anzahl der Listeneinträge
             VAR_INPUT
                 datasetItem : LAcycCom_typeDriveDataset;
                 element_no  : int := int#-1; //-1 element an die liste anhängen. >=0 element überschreiben
@@ -440,7 +440,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             If element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
                     dataset[statCountOfElements] :=datasetItem;
                 statCountOfElements := statCountOfElements + 1;
-                AddatasetItem := statCountOfElements;
+                AddDatasetItem := statCountOfElements;
 
             elsif element_no > -1 and
                 element_no < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM and
@@ -449,14 +449,14 @@ NAMESPACE Simatic.Ax.LAcycCom
                     If element_no = statCountOfElements Then
                         statCountOfElements := statCountOfElements + 1;
                     end_IF;
-                    AddatasetItem := statCountOfElements;
+                    AddDatasetItem := statCountOfElements;
             else
-                AddatasetItem := -1;
+                AddDatasetItem := -1;
             end_if;
 
         End_Method
 
-        Method public ReaddatasetItem : LAcycCom_typeDriveDataset
+        Method public ReadDatasetItem : LAcycCom_typeDriveDataset
             VAR_INPUT
                 element_no  : int := int#0;
             end_VAR
@@ -465,12 +465,12 @@ NAMESPACE Simatic.Ax.LAcycCom
             end_VAR
 
             If element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
-                ReaddatasetItem := dataset[element_no];
+                ReadDatasetItem := dataset[element_no];
             end_if;
 
         End_Method
 
-        Method public ReaddatasetValue : real
+        Method public ReadDatasetValue : real
           VAR_INPUT
               element_no  : int := int#0;
           end_VAR
@@ -479,7 +479,7 @@ NAMESPACE Simatic.Ax.LAcycCom
           end_VAR
 
           If element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
-            ReaddatasetValue := dataset[element_no].Rvalue;
+            ReadDatasetValue := dataset[element_no].Rvalue;
           end_if;
 
         End_Method
@@ -499,4 +499,4 @@ NAMESPACE Simatic.Ax.LAcycCom
         End_Method
 
     END_CLASS
-END_NAMESPACE    
+END_NAMESPACE
