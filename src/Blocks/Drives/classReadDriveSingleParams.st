@@ -380,7 +380,8 @@ NAMESPACE Simatic.Ax.LAcycCom
 
              // starts functionality
              IF not ((statFBState = LAcycCom_ReadWriteStatus#FB_IDLE OR
-                 statFBState = LAcycCom_ReadWriteStatus#FB_DONE) AND
+                 statFBState = LAcycCom_ReadWriteStatus#FB_DONE or 
+                 statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) AND
                  statrequestBuffer <> NULL) THEN
                    Start := False;
              ELSE
