@@ -10,10 +10,10 @@ FUNCTION SerializeBig : UINT
         buffer : ARRAY[*] OF BYTE;
     END_VAR
     SerializeBig := offset;
-    SerializeBig := System.Serde.SerializeBig(offset := SerializeBig, value := value.refNo, buffer := buffer);
-    SerializeBig := System.Serde.SerializeBig(offset := SerializeBig, value := value.reqId, buffer := buffer);
-    SerializeBig := System.Serde.SerializeBig(offset := SerializeBig, value := value.doId, buffer := buffer);
-    SerializeBig := System.Serde.SerializeBig(offset := SerializeBig, value := value.parameterNo, buffer := buffer);
+    SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.refNo, buffer := buffer);
+    SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.reqId, buffer := buffer);
+    SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.doId, buffer := buffer);
+    SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.parameterNo, buffer := buffer);
 END_FUNCTION
 
 FUNCTION DeserializeBig : UINT
@@ -25,9 +25,9 @@ FUNCTION DeserializeBig : UINT
         value : LAcycCom_Typestatheader;
     END_VAR
     DeserializeBig := offset;
-    DeserializeBig := System.Serde.DeserializeBig(offset := DeserializeBig, value := value.refNo, buffer := buffer);
-    DeserializeBig := System.Serde.DeserializeBig(offset := DeserializeBig, value := value.reqId, buffer := buffer);
-    DeserializeBig := System.Serde.DeserializeBig(offset := DeserializeBig, value := value.doId, buffer := buffer);
-    DeserializeBig := System.Serde.DeserializeBig(offset := DeserializeBig, value := value.parameterNo, buffer := buffer);
+    DeserializeBig := System.Serialization.DeserializeBig(offset := DeserializeBig, value := value.refNo, buffer := buffer);
+    DeserializeBig := System.Serialization.DeserializeBig(offset := DeserializeBig, value := value.reqId, buffer := buffer);
+    DeserializeBig := System.Serialization.DeserializeBig(offset := DeserializeBig, value := value.doId, buffer := buffer);
+    DeserializeBig := System.Serialization.DeserializeBig(offset := DeserializeBig, value := value.parameterNo, buffer := buffer);
 END_FUNCTION
 END_NAMESPACE

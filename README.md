@@ -30,6 +30,8 @@ Simatic.Ax.LAcycCom;
 ## Example
 
 ```cli
+USING Simatic.Ax.LAcycCom;
+
 PROGRAM MyProgram
     VAR
         Resourcemanager         : OOPLAcycCom_ResourceManager;
@@ -62,10 +64,10 @@ PROGRAM MyProgram
     end_IF;
 
     CASE ReadParameter.Status() OF
-        LAcycComstate_def#BUSY :
+        LAcycComstateDef#BUSY :
             ;
 
-        LAcycComstate_def#IDLE :
+        LAcycComstateDef#IDLE :
             datasetitemread.parameterNumber := uint#304;
             elements := ReadParameter.AddatasetItem(datasetItem := datasetitemread,
                                                     element_no  := -1);
@@ -77,74 +79,74 @@ PROGRAM MyProgram
             ReadParameter.Start(driveObjectId  := uint#5,
                                 hardwareId     := word#269);
 
-        LAcycComstate_def#DONE :
+        LAcycComstateDef#DONE :
             datasetitemread := ReadParameter.ReaddatasetItem(element_no := 0);
-            RVALUEp304 := datasetitemread.value;
+            RVALUEp304 := datasetitemread.Rvalue;
             datasetitemread := ReadParameter.ReaddatasetItem(element_no := 1);
-            RVALUEp305 := datasetitemread.value;
+            RVALUEp305 := datasetitemread.Rvalue;
 
-        LAcycComstate_def#ERROR :
+        LAcycComstateDef#ERROR :
             diagnostic := ReadParameter.errordiagnostics();
     END_CASE;
 
     CASE ReadParameterSingle.Status() OF
-        LAcycComstate_def#BUSY :
+        LAcycComstateDef#BUSY :
             ;
 
-        LAcycComstate_def#IDLE :
+        LAcycComstateDef#IDLE :
             ReadParameterSingle.Start(  driveObjectId      := uint#5,
                                         hardwareId         := word#269,
                                         parameterNumber    := uint#310,
                                         index              := uint#0);
 
-        LAcycComstate_def#DONE :
+        LAcycComstateDef#DONE :
         RVALUEp310 := ReadParameterSingle.GetValueREAL();
 
-        LAcycComstate_def#ERROR :
+        LAcycComstateDef#ERROR :
             diagnostic := ReadParameterSingle.errordiagnostics();
     END_CASE;
 
     CASE WriteParameter.Status() OF
-        LAcycComstate_def#BUSY :
+        LAcycComstateDef#BUSY :
             ;
 
-        LAcycComstate_def#IDLE :
+        LAcycComstateDef#IDLE :
 
             datasetitemwrite.parameterNumber := uint#2900;
-            datasetitemwrite.value  := real#12.3;
+            datasetitemwrite.Rvalue  := real#12.3;
             elements := WriteParameter.AddatasetItem(datasetItem := datasetitemwrite,
                                                       element_no := -1);
 
             datasetitemwrite.parameterNumber := uint#2901;
-            datasetitemwrite.value  := real#45.6;
+            datasetitemwrite.Rvalue  := real#45.6;
             elements := WriteParameter.AddatasetItem(datasetItem := datasetitemwrite,
                                                     element_no   := -1);
 
             WriteParameter.Start(driveObjectId  := uint#5,
                                  hardwareId     := word#269);
 
-        LAcycComstate_def#DONE :
+        LAcycComstateDef#DONE :
             ;
 
-        LAcycComstate_def#ERROR :
+        LAcycComstateDef#ERROR :
             diagnostic := WriteParameter.errordiagnostics();
     END_CASE;
 
     CASE WriteParameterSingle.Status() OF
-        LAcycComstate_def#BUSY :
+        LAcycComstateDef#BUSY :
             ;
 
-        LAcycComstate_def#IDLE :
+        LAcycComstateDef#IDLE :
         WriteParameterSingle.Start( driveObjectId   := uint#5,
                                     hardwareId      := word#269,
                                     parameterNumber := uint#2930,
                                     value           := REAL#78.9,
                                     index           := uint#0);
 
-        LAcycComstate_def#DONE :
+        LAcycComstateDef#DONE :
             ;
 
-        LAcycComstate_def#ERROR :
+        LAcycComstateDef#ERROR :
             diagnostic := WriteParameterSingle.errordiagnostics();
     END_CASE;
 
