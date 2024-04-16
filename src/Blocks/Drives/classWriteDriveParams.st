@@ -630,13 +630,13 @@ NAMESPACE Simatic.Ax.LAcycCom
             VAR_TEMP
                 tempLoopIndex : Int;
             end_VAR
-            If element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM Then
+            If element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM Then
                     dataset[statCountOfElements] :=datasetItem;
                 AddatasetItem := statCountOfElements;
                 statCountOfElements := statCountOfElements + 1;
 
             elsif element_no > -1 and
-                element_no < LAcycComConstantsInt#LACYCCOM_READ_PARAMETERS_UPPER_LIM and
+                element_no < LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM and
                 element_no <= statCountOfElements Then
                     dataset[element_no] :=datasetItem;
                 If element_no = statCountOfElements Then
