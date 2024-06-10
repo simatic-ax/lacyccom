@@ -25,7 +25,7 @@ devDependencies:
 dependencies:
   "@ax/system-timer": ^6.0.94
   "@ax/simatic-1500-distributedio": ^6.0.3
-  "@ax/system-serde": ^6.0.94
+  "@ax/system-serde": ^7.0.0
 
 # Registry information, where the package will be published
 registries:
