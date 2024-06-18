@@ -9,27 +9,27 @@ type: lib
 repository:
   type: git
   url: https://github.com/simatic-ax/lacyccom
+# Registry information, where the package will be published
+registries:
+  '@simatic-ax': 'https://npm.pkg.github.com/'
 # Environment variables
 variables:
   APAX_BUILD_ARGS:
     - '--debug'
 targets:
   - '1500'
-  # - 'axunit-llvm'
   - 'llvm'
+# Install Setting
+installStrategy: strict
+apaxVersion: 3.1.0
 # Dependencies
 devDependencies:
-  '@ax/sdk': ^2311.0.1
-  "@simatic-ax/snippetscollection": ^0.0.15
-
+  '@ax/sdk': 2405.0.0
+  "@simatic-ax/snippetscollection": 1.0.0
 dependencies:
-  "@ax/system-timer": ^6.0.94
-  "@ax/simatic-1500-distributedio": ^7.0.0
-  "@ax/system-serde": ^6.0.94
-
-# Registry information, where the package will be published
-registries:
-  '@simatic-ax': 'https://npm.pkg.github.com/'
+  "@ax/system-timer": 7.0.17
+  "@ax/simatic-1500-distributedio": 7.0.1
+  "@ax/system-serde": 7.0.17
 # Files, which will be shipped with the library
 files:
   - 'README.md'
@@ -37,5 +37,3 @@ files:
   - 'doc'
   - 'src'
   - 'snippets'
-installStrategy: strict
-apaxVersion: 3.1.0
