@@ -1,9 +1,9 @@
 // This is generated code. *** DO NOT MODIFY ***
 
 NAMESPACE Simatic.Ax.LAcycCom
-FUNCTION SerializeBig : UINT
+FUNCTION SerializeBig : UDINT
     VAR_INPUT
-        offset : UINT;
+        offset : UDINT;
         value : LAcycCom_Typestatheader;
     END_VAR
     VAR_IN_OUT
@@ -16,9 +16,9 @@ FUNCTION SerializeBig : UINT
     SerializeBig := System.Serialization.SerializeBig(offset := SerializeBig, value := value.parameterNo, buffer := buffer);
 END_FUNCTION
 
-FUNCTION DeserializeBig : UINT
+FUNCTION DeserializeBig : UDINT
     VAR_INPUT
-        offset : UINT;
+        offset : UDINT;
         buffer : ARRAY[*] OF BYTE;
     END_VAR
     VAR_IN_OUT
