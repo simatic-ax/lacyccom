@@ -620,6 +620,8 @@ NAMESPACE Simatic.Ax.LAcycCom
                 dataset[z].Rvalue    := real#0.0;
             end_FOR;
 
+            statCountOfElements := 0;
+
         End_Method
 
         Method public AddatasetItem : int //Rückgabewert = anzahl der Listeneinträge
