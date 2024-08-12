@@ -16,7 +16,24 @@ NAMESPACE Simatic.Ax.LAcycCom
             FB_BUSY_WRREC_2,
             FB_BUSY_RDREC_1,
             FB_BUSY_RDREC_2,
-            FB_GET_SUBSTATE
+            FB_GET_SUBSTATE,
+
+            FB_BUSY_PING_RESET,
+            FB_BUSY_PING_RESET_END,
+            FB_BUSY_PING,
+            FB_BUSY_READ_PING,
+            FB_BUSY_CHECK_PING,
+            FB_BUSY_RD_LOC_T_DAYS,
+            FB_BUSY_RD_LOC_T_MSEC,
+            FB_BUSY_WRREC_TIMESTAMP, 
+            FB_BUSY_WRREC_TIME_DAYS, 
+            FB_BUSY_WRREC_TIME_MSEC, 
+            FB_BUSY_WRREC_RD_PING,
+            FB_BUSY_RDREC_TIMESTAMP, 
+            FB_BUSY_RDREC_TIME_DAYS, 
+            FB_BUSY_RDREC_TIME_MSEC, 
+            FB_BUSY_RDREC_RD_PING
+
         );
 
         LAcycCom_ResourceManagerRetval : (
