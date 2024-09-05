@@ -9,7 +9,8 @@
     "dependencies": {
       "@ax/system-timer": "7.0.17",
       "@ax/simatic-1500-distributedio": "7.0.1",
-      "@ax/system-serde": "7.0.17"
+      "@ax/system-serde": "7.0.17",
+      "@ax/simatic-1500-clocks": "^7.0.4"
     },
     "devDependencies": {
       "@ax/sdk": "2405.0.0",
@@ -73,6 +74,13 @@
       "dependencies": {
         "@ax/system-strings": "7.0.17"
       }
+    },
+    "@ax/simatic-1500-clocks": {
+      "name": "@ax/simatic-1500-clocks",
+      "version": "7.0.4",
+      "integrity": "sha512-tJ9zlHOYpAsr9RYZEhpQojmSqw6Ja8aYPpZH94OCXaEggSdArpgQWr4Kyvw7w2NHx5TC3LnmED/BoBCilwCBaA==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-1500-clocks/-/simatic-1500-clocks-7.0.4.tgz",
+      "dependencies": {}
     },
     "@ax/apax-build": {
       "name": "@ax/apax-build",
