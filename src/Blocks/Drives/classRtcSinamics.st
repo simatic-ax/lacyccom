@@ -1,36 +1,34 @@
-using system.timer;
 USING Siemens.Simatic.S71500.Clocks;
 USING System.DateTime;
-using siemens.Simatic.S71500.DistributedIO;
 
 NAMESPACE Simatic.Ax.LAcycCom
     CLASS LAcycCom_classRtcSinamics
         VAR 
-            statrtcRealTimeSyncPING : bool;
-            statRetSetrtcRealTimeSyncPING : bool;
-            statRetResetrtcRealTimeSyncPING : bool;
-            statrequestBuffer    : Resourcemanager;
-            statWriteDrivePara   : LAcycCom_classWriteDriveSingleParams; 
-            statFBState   : LAcycCom_ReadWriteStatus := LAcycCom_ReadWriteStatus#FB_IDLE;   // States in the function block state machine
-            statFBSubState   : LAcycCom_ReadWriteStatus := LAcycCom_ReadWriteStatus#FB_BUSY_PING;   // States in the function block during processing (busy state)
-            statStatus   : Word := STATUS_NO_CALL;   // Static value for output status
-            statStateNumber   : LAcycCom_ReadWriteStatus;   // State of the FB when error occurred
-            stathardwareId : HW_IO;
-            statsystemDateTime : LDATE_AND_TIME;
-            statWritepara : LAcycCom_classWriteDriveSingleParams; 
-            statactmilisecond : DWORD;
-            statexternTime : Bool;
-            StatEnablePing : Bool;
-        end_VAR   
+            statrtcRealTimeSyncPING         : BOOL;
+            statRetSetrtcRealTimeSyncPING   : BOOL;
+            statRetResetrtcRealTimeSyncPING : BOOL;
+            statrequestBuffer               : Resourcemanager;
+            statWriteDrivePara              : LAcycCom_classWriteDriveSingleParams; 
+            statFBState                     : LAcycCom_ReadWriteStatus := LAcycCom_ReadWriteStatus#FB_IDLE;   // States in the function block state machine
+            statFBSubState                  : LAcycCom_ReadWriteStatus := LAcycCom_ReadWriteStatus#FB_BUSY_PING;   // States in the function block during processing (busy state)
+            statStatus                      : WORD := STATUS_NO_CALL;   // Static value for output status
+            statStateNumber                 : LAcycCom_ReadWriteStatus;   // State of the FB when error occurred
+            stathardwareId                  : HW_IO;
+            statsystemDateTime              : LDATE_AND_TIME;
+            statWritepara                   : LAcycCom_classWriteDriveSingleParams; 
+            statactmilisecond               : DWORD;
+            statexternTime                  : BOOL;
+            StatEnablePing                  : BOOL;
+        END_VAR   
 
         VAR CONSTANT
-            STATUS_EXECUTION_FINISHED : Word := word#16#0000;   // Execution finished without errors
-            STATUS_NO_CALL : Word := word#16#7000;   // No call of FB
-            STATUS_ALLOCATE : Word := word#16#7001;   // FB is currently allocating a request element
-            STATUS_GET_RESOURCE : Word := word#16#7002;   // FB is waiting until it has “speaking rights”
-            STATUS_BUSY : Word := word#16#7003;   // FB is currently in processing
-            STATUS_RELEASE : Word := word#16#7004;   // FB is releasing the allocated element
-            ERR_UNDEFINED_STATE : Word := word#16#8611;   // Error due to an undefined state
+            STATUS_EXECUTION_FINISHED   : WORD := WORD#16#0000;   // Execution finished without errors
+            STATUS_NO_CALL              : WORD := WORD#16#7000;   // No call of FB
+            STATUS_ALLOCATE             : Word := WORD#16#7001;   // FB is currently allocating a request element
+            STATUS_GET_RESOURCE         : Word := WORD#16#7002;   // FB is waiting until it has “speaking rights”
+            STATUS_BUSY                 : WORD := WORD#16#7003;   // FB is currently in processing
+            STATUS_RELEASE              : WORD := WORD#16#7004;   // FB is releasing the allocated element
+            ERR_UNDEFINED_STATE         : WORD := WORD#16#8611;   // Error due to an undefined state
         END_VAR
 
         METHOD PUBLIC execute 
@@ -55,44 +53,44 @@ NAMESPACE Simatic.Ax.LAcycCom
             END_IF;
 
 
-        end_METHOD         
+        END_METHOD         
 
         Method Private FIRST_CYCLE
             
-            statrtcRealTimeSyncPING := False;
-            statRetSetrtcRealTimeSyncPING := False;
-            statRetResetrtcRealTimeSyncPING := False;
+            statrtcRealTimeSyncPING         := FALSE;
+            statRetSetrtcRealTimeSyncPING   := FALSE;
+            statRetResetrtcRealTimeSyncPING := FALSE;
 
-            statFBState := LAcycCom_ReadWriteStatus#FB_BUSY;
-            statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_PING_RESET;
+            statFBState     := LAcycCom_ReadWriteStatus#FB_BUSY;
+            statFBSubState  := LAcycCom_ReadWriteStatus#FB_BUSY_PING_RESET;
         END_METHOD
 
         Method PRIVATE Busy
             VAR
-                actDays : INT;
-                actMonth : INT;
-                actYear : INT;
-                actHour : INT;
-                actMinute : INT;
-                actSecond : INT;
-                actMillisecond : INT;
-                elapsedYears : INT;
-                elapsedDays : DINT;
-                loop : DINT;
+                actDays         : INT;
+                actMonth        : INT;
+                actYear         : INT;
+                actHour         : INT;
+                actMinute       : INT;
+                actSecond       : INT;
+                actMillisecond  : INT;
+                elapsedYears    : INT;
+                elapsedDays     : DINT;
+                loop            : DINT;
             END_VAR
 
             CASE statFBSubState OF
                 LAcycCom_ReadWriteStatus#FB_BUSY_PING_RESET: 
-                    If statRetResetrtcRealTimeSyncPING then 
+                    IF statRetResetrtcRealTimeSyncPING THEN 
                         statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC;
  
                         statWriteDrivePara.execute();
                         statWriteDrivePara.Start(driveObjectId  := UINT#1,   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                                                hardwareId := stathardwareId,   // Hardware identifier of the hardware module
-                                                parameterNumber := UInt#3100,   // Number of the parameter
-                                                index := uint#0,   // Parameter index
-                                                value   := real#1.0,
-                                                DWVALUE := dword#0
+                                                hardwareId      := stathardwareId,   // Hardware identifier of the hardware module
+                                                parameterNumber := UINT#3100,   // Number of the parameter
+                                                index           := UINT#0,   // Parameter index
+                                                value           := REAL#1.0,
+                                                DWVALUE         := DWORD#0
                                                 );
                     END_IF;
 
@@ -100,39 +98,39 @@ NAMESPACE Simatic.Ax.LAcycCom
                 LAcycCom_ReadWriteStatus#FB_BUSY_WRREC:
                     statWriteDrivePara.execute();
  
-                    If  statWriteDrivePara.Status() = LAcycComstateDef#DONE Then
+                    IF  statWriteDrivePara.Status() = LAcycComstateDef#DONE Then
                         statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1;
-                        If StatEnablePing Then
+                        IF StatEnablePing Then
                             statWriteDrivePara.Start(driveObjectId  := UINT#1,   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                                                    hardwareId := stathardwareId,   // Hardware identifier of the hardware module
-                                                    parameterNumber := UInt#3103,   // Number of the parameter
-                                                    index := uint#0,   // Parameter index
-                                                    value   := real#0.0,
-                                                    DWVALUE := dword#0
+                                                    hardwareId      := stathardwareId,   // Hardware identifier of the hardware module
+                                                    parameterNumber := UINT#3103,   // Number of the parameter
+                                                    index           := UINT#0,   // Parameter index
+                                                    value           := REAL#0.0,
+                                                    DWVALUE         := DWORD#0
                                                     );
-                        else
+                        ELSE
                             statWriteDrivePara.Start(driveObjectId  := UINT#1,   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                                                    hardwareId := stathardwareId,   // Hardware identifier of the hardware module
-                                                    parameterNumber := UInt#3103,   // Number of the parameter
-                                                    index := uint#0,   // Parameter index
-                                                    value   := real#2.0,
-                                                    DWVALUE := dword#0
+                                                    hardwareId      := stathardwareId,   // Hardware identifier of the hardware module
+                                                    parameterNumber := UINT#3103,   // Number of the parameter
+                                                    index           := UINT#0,   // Parameter index
+                                                    value           := REAL#2.0,
+                                                    DWVALUE         := DWORD#0
                                                     );  
-                        end_IF;
-                    end_IF; 
+                        END_IF;
+                    END_IF; 
  
                 LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1:
                     statWriteDrivePara.execute();
  
-                    If  statWriteDrivePara.Status() = LAcycComstateDef#DONE Then
+                    IF  statWriteDrivePara.Status() = LAcycComstateDef#DONE THEN
                         statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_PING;
-                    end_IF;   
+                    END_IF;   
 
                 LAcycCom_ReadWriteStatus#FB_BUSY_PING: 
                     statrtcRealTimeSyncPING := StatEnablePing;
-                    If statRetSetrtcRealTimeSyncPING or not StatEnablePing then 
+                    IF statRetSetrtcRealTimeSyncPING or not StatEnablePing THEN 
                         
-                        If not statexternTime Then
+                        IF not statexternTime THEN
                             GetSystemDateTime(value => statsystemDateTime);
                         END_IF;
 
@@ -201,11 +199,11 @@ NAMESPACE Simatic.Ax.LAcycCom
                         statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2;
                         statWriteDrivePara.execute();
                         statWriteDrivePara.Start(driveObjectId  := UINT#1,   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                                                hardwareId := stathardwareId,   // Hardware identifier of the hardware module
-                                                parameterNumber := UInt#3101,   // Number of the parameter
-                                                index := uint#1,   // Parameter index
-                                                value   := TO_REAL(elapsedDays+8034),
-                                                DWVALUE := dword#0
+                                                hardwareId      := stathardwareId,   // Hardware identifier of the hardware module
+                                                parameterNumber := UINT#3101,   // Number of the parameter
+                                                index           := UINT#1,   // Parameter index
+                                                value           := TO_REAL(elapsedDays+8034),
+                                                DWVALUE         := DWORD#0
                                                 );
                     END_IF;     
 
@@ -217,54 +215,54 @@ NAMESPACE Simatic.Ax.LAcycCom
                         statFBSubState := LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_3;
                         statWriteDrivePara.execute();
                         statWriteDrivePara.Start(driveObjectId  := UINT#1,   // Optional: Identification number of the drive object (value =0: driveObjectId is not used, i.e. the corresponding drive object is only addressed via the hardwareId)
-                                        hardwareId := stathardwareId,   // Hardware identifier of the hardware module
-                                        parameterNumber := UInt#3101,   // Number of the parameter
-                                        index := uint#0,   // Parameter index
-                                        value   := real#0.0,
-                                        DWVALUE := statactmilisecond
+                                                hardwareId      := stathardwareId,   // Hardware identifier of the hardware module
+                                                parameterNumber := UINT#3101,   // Number of the parameter
+                                                index           := UINT#0,   // Parameter index
+                                                value           := REAL#0.0,
+                                                DWVALUE         := statactmilisecond
                                         
                                         );
 
-                    end_IF; 
+                    END_IF; 
   
                 LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_3 :
                     statWriteDrivePara.execute();
-                    If  statWriteDrivePara.Status() = LAcycComstateDef#DONE Then
-                        statFBState := LAcycCom_ReadWriteStatus#FB_DONE;
-                        statrtcRealTimeSyncPING := FALSE;
-                    end_IF; 
+                    IF  statWriteDrivePara.Status() = LAcycComstateDef#DONE Then
+                            statFBState             := LAcycCom_ReadWriteStatus#FB_DONE;
+                            statrtcRealTimeSyncPING := FALSE;
+                    END_IF; 
             END_CASE;
 
         END_METHOD
 
-        METHOD PUBLIC Start : bool
+        METHOD PUBLIC Start : BOOL
             VAR_INPUT
                 hardwareId      : HW_IO;
-                enablePingSnap  : Bool := TRUE;
+                enablePingSnap  : BOOL := TRUE;
             END_VAR
                          // starts functionality
              IF not ((statFBState = LAcycCom_ReadWriteStatus#FB_IDLE OR
                     statFBState = LAcycCom_ReadWriteStatus#FB_DONE or 
                     statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) AND
                     statrequestBuffer <> NULL) THEN
-                    Start := False;
+                        Start := FALSE;
              ELSE
                // Initialisation
-                StatEnablePing := enablePingSnap;
-                Start          := True;
-                statexternTime := False;
-                stathardwareId := hardwareId;
-                statFBState := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
+                        StatEnablePing  := enablePingSnap;
+                        Start           := TRUE;
+                        statexternTime  := FALSE;
+                        stathardwareId  := hardwareId;
+                        statFBState     := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
 
-             end_if;
+             END_IF;
 
             statWriteDrivePara.Config(requestBuffer := statrequestBuffer); 
         end_METHOD
 
-        METHOD PUBLIC StartTimeSet : bool
+        METHOD PUBLIC StartTimeSet : BOOL
             VAR_INPUT
                 hardwareId : HW_IO;
-                enablePingSnap  : Bool := FALSE;
+                enablePingSnap  : BOOL := FALSE;
                 SetTime : LDATE_AND_TIME;
             END_VAR
                          // starts functionality
@@ -272,32 +270,32 @@ NAMESPACE Simatic.Ax.LAcycCom
                     statFBState = LAcycCom_ReadWriteStatus#FB_DONE or 
                     statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) AND
                     statrequestBuffer <> NULL) THEN
-                    StartTimeSet := False;
+                    StartTimeSet := FALSE;
              ELSE
                // Initialisation
                     StatEnablePing      := enablePingSnap;
-                    StartTimeSet        := True;
-                    statexternTime      := true;
+                    StartTimeSet        := TRUE;
+                    statexternTime      := TRUE;
                     stathardwareId      := hardwareId;
                     statsystemDateTime  := SetTime;
                     statFBState         := LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE;
-             end_if;
+             END_IF;
 
             statWriteDrivePara.Config(requestBuffer := statrequestBuffer); 
         end_METHOD       
         
-        METHOD PUBLIC getPing : bool
+        METHOD PUBLIC getPing : BOOL
             getPing := statrtcRealTimeSyncPING;
-            If statrtcRealTimeSyncPING Then
+            IF statrtcRealTimeSyncPING Then
                 statRetSetrtcRealTimeSyncPING := TRUE;
-                statRetResetrtcRealTimeSyncPING := False;
-            else
-                statRetSetrtcRealTimeSyncPING := False;
+                statRetResetrtcRealTimeSyncPING := FALSE;
+            ELSE
+                statRetSetrtcRealTimeSyncPING := FALSE;
                 statRetResetrtcRealTimeSyncPING := TRUE;
-            end_If;
+            END_IF;
         end_METHOD  
 
-        METHOD PUBLIC Config : Bool
+        METHOD PUBLIC Config : BOOL
             VAR_INPUT
                 requestBuffer : Resourcemanager;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
              END_VAR
@@ -324,7 +322,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                 LAcycCom_ReadWriteStatus#FB_ERROR:
                     Status := LAcycComstateDef#Error;
 
-                else
+            ELSE
                 ;
             END_CASE;
         END_METHOD

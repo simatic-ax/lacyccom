@@ -221,7 +221,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
         END_METHOD
 
-        METHOD Allocate
+        METHOD FINAL Allocate
                   // Allocation of a request element
                   statAllocatedIndex := statrequestBuffer.allocate(hardwareId :=statHwId);
 
