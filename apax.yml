@@ -30,6 +30,7 @@ dependencies:
   "@ax/system-timer": 7.0.17
   "@ax/simatic-1500-distributedio": 7.0.1
   "@ax/system-serde": 7.0.17
+  "@ax/simatic-1500-clocks": ^7.0.4
 # Files, which will be shipped with the library
 files:
   - 'README.md'
