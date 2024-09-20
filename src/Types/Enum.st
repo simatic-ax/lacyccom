@@ -14,6 +14,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             FB_BUSY_WAIT,    // State when temporary error occurred
             FB_BUSY_WRREC_1,
             FB_BUSY_WRREC_2,
+            FB_BUSY_WRREC_3,
             FB_BUSY_RDREC_1,
             FB_BUSY_RDREC_2,
             FB_GET_SUBSTATE,
