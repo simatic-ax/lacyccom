@@ -1,6 +1,5 @@
 on: push
 
-
 jobs:
   test-apax-lib:
     uses: simatic-ax/actions/.github/workflows/apax-build-test.yml@fix/libtinfo6_use_for_tests
