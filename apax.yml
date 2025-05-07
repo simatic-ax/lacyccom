@@ -21,7 +21,6 @@ targets:
   - 'llvm'
 # Install Setting
 installStrategy: strict
-apaxVersion: 3.2.1
 # Dependencies
 devDependencies:
   '@ax/sdk': ^2504.0.0
