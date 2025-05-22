@@ -1,4 +1,4 @@
-using system.timer;
+using System.Timer;
 NAMESPACE Simatic.Ax.LAcycCom
 
     INTERFACE Resourcemanager
@@ -27,9 +27,9 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
         VAR PRIVATE
             statResourceAddInfo  : Array[0..RESOURCES_ARRAY_UPPER_LIM] of LAcycCom_TypestatResourceAddInfo;
-            instBufferLockWatchdog   : ondelay;   // Watchdog timer for request buffer lock bit
-            instRuntime     : ondelay;   // Timer for runtime measurement
-            instCycleTime   : ondelay;   // Timer for detecting cycle time
+            instBufferLockWatchdog   : OnDelay;   // Watchdog timer for request buffer lock bit
+            instRuntime     : OnDelay;   // Timer for runtime measurement
+            instCycleTime   : OnDelay;   // Timer for detecting cycle time
             statIM0Data     : Typedata;   // Identification and maintanance data
             statNoOfUsedResources  : Int := 0;   // Number of used resources
             statUpperLimResources  : Int := 0;   // Upper limit of resources for acyclic communication

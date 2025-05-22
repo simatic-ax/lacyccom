@@ -1,5 +1,5 @@
-using system.timer;
-using siemens.Simatic.S71500.DistributedIO;
+using System.Timer;
+using Siemens.Simatic.S71500.DistributedIO;
 
 NAMESPACE Simatic.Ax.LAcycCom
 
@@ -30,9 +30,9 @@ NAMESPACE Simatic.Ax.LAcycCom
             statReqParameterInit   : LAcycCom_TypestatparameterAddress :=(attribute := byte#16#10, elementNo  := byte#16#01, parameterNo := uint#0, index := uint#0);
 
             statRespParameter   : LAcycCom_TypestatRespParameter;   // Response telegram
-            instWRREC : writerecord;   // WRREC command
+            instWRREC : WriteRecord;   // WRREC command
             instRDREC  : ReadRecord;   // RDREC command
-            instIECTimer  : ondelay;   // IEC-Timer
+            instIECTimer  : OnDelay;   // IEC-Timer
 
             atmpSend : ARRAY[0..237]of BYTE ;
             atmpRec  : ARRAY[0..237]of BYTE ;
