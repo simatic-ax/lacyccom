@@ -58,12 +58,13 @@ jobs:
         id: determine_version
         shell: bash
         run: |
-          echo "inputs.version = '${{ inputs.version }}'"
-          echo "github.sha = '${{ github.sha }}'"
-          if [ "${{ inputs.version }}" = "0.0.1" ]; then
-            echo "version=0.0.1-${{ github.sha }}" >> $GITHUB_OUTPUT
+          INPUT_VERSION="${{ inputs.version }}"
+          SHA_SHORT="${{ github.sha }}"
+          
+          if [ -z "$INPUT_VERSION" ]; then
+            echo "version=0.0.1-${SHA_SHORT}" >> $GITHUB_OUTPUT
           else
-            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+            echo "version=${INPUT_VERSION}" >> $GITHUB_OUTPUT
           fi
 
       - name: Version the package
