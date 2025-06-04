@@ -22,6 +22,7 @@ jobs:
     with:
       # checks out the branch that has been selected during the release process
       ref: ${{ github.event.release.target_commitish }}
+      version: ${{ github.event.release.tag_name }}
 
   release:
     name: Release the package
