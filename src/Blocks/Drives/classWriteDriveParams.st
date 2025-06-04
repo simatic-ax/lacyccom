@@ -1,4 +1,4 @@
-using system.timer;
+using System.Timer;
 using siemens.Simatic.S71500.DistributedIO;
 
 NAMESPACE Simatic.Ax.LAcycCom
@@ -76,7 +76,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                         ;
                       END_IF;
                       FOR tempLoopIndex := 0 TO LENGTH_WRITE_TELEGRAM_UPPER_LIM DO
-                         atmpRec[tempLoopIndex] := byte#0;
+                         THIS.atmpRec[tempLoopIndex] := byte#0;
                       END_FOR;
 
                     LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1, LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2:  // Writing the dataset configuration into the drive object
@@ -84,7 +84,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                     IF (statCmdBusy = FALSE) AND (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                       // Resets WRREC command
                       instWRREC(request := FALSE,
-                      RECORD := atmpRec);
+                      RECORD := THIS.atmpRec);
 
                       // Creating header data
                      statReqReadParameter.header.refNo := statRefNo; // Telegram reference number
@@ -108,7 +108,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                     ELSIF (statCmdBusy = FALSE) AND (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                       // Resets WRREC command
                       instWRREC(request := FALSE,
-                                 RECORD := atmpRec);
+                                 RECORD := THIS.atmpRec);
 
                        tempPointer := 0;
                       // Creating header data
@@ -268,12 +268,12 @@ NAMESPACE Simatic.Ax.LAcycCom
 
                     SerializeBig(uint#0,
                     statReqReadParameter,
-                    atmpSend );
+                    THIS.atmpSend );
 
                     IF (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_1) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                       SerializeBig(uint#0,
                         statReqReadParameter,
-                        atmpSend );
+                        THIS.atmpSend );
                       // WRREC command
                       instWRREC(REQUEST := TRUE,                                                // Transfer data record
                                  ID := statHwId,                                                // ID number of the hardware component
@@ -283,12 +283,12 @@ NAMESPACE Simatic.Ax.LAcycCom
                                  BUSY => statCmdBusy,                                           // The writing process is not yet complete
                                  ERROR => statCmdError,                                         // An error occurred during the writing process
                                  STATUS =>  tempCmdStatus,                                       // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                                 RECORD := atmpSend);                               // Data record
+                                 RECORD := THIS.atmpSend);                               // Data record
 
                     ELSIF (statFBSubState = LAcycCom_ReadWriteStatus#FB_BUSY_WRREC_2) AND  not(statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
                       SerializeBig(uint#0,
                         statReqWriteParameter,
-                        atmpSend );
+                        THIS.atmpSend );
                         // WRREC command
                       instWRREC(REQUEST := TRUE,                                                // Transfer data record
                                  ID := statHwId,                                                // ID number of the hardware component
@@ -298,7 +298,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                                  BUSY => statCmdBusy,                                           // The writing process is not yet complete
                                  ERROR => statCmdError,                                         // An error occurred during the writing process
                                  STATUS =>  tempCmdStatus,                                       // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                                 RECORD := atmpSend);                              // Data record
+                                 RECORD := THIS.atmpSend);                              // Data record
                     END_IF;
 
 
@@ -354,7 +354,7 @@ NAMESPACE Simatic.Ax.LAcycCom
                     // Resets RDREC command
                     IF (statCmdBusy = FALSE) THEN
                       instRDREC(request := FALSE,
-                                 RECORD := atmpRec);
+                                 RECORD := THIS.atmpRec);
 
                     END_IF;
 
@@ -366,10 +366,10 @@ NAMESPACE Simatic.Ax.LAcycCom
                                BUSY => statCmdBusy,                                            // The reading process is not yet complete
                                ERROR => statCmdError,                                          // An error occurred during the reading process
                                STATUS =>  tempCmdStatus,                                        // Status[1] = Error => Status[2] Error Decode + Status[3] Error Code
-                               RECORD := atmpRec);                                   // Destination area for the data record read
+                               RECORD := THIS.atmpRec);                                   // Destination area for the data record read
 
                     DeserializeBig(uint#0,
-                                atmpRec,
+                                THIS.atmpRec,
                                 statRespParameter);
 
                     // Error occurred
