@@ -58,6 +58,8 @@ jobs:
         id: determine_version
         shell: bash
         run: |
+          echo "inputs.version = '${{ inputs.version }}'"
+          echo "github.sha = '${{ github.sha }}'"
           if [ "${{ inputs.version }}" = "0.0.1" ]; then
             echo "version=0.0.1-${{ github.sha }}" >> $GITHUB_OUTPUT
           else
