@@ -56,6 +56,7 @@ jobs:
 
       - name: Determine version
         id: determine_version
+        shell: bash
         run: |
           if [ "${{ inputs.version }}" = "0.0.1" ]; then
             echo "version=0.0.1-${{ github.sha }}" >> $GITHUB_OUTPUT
