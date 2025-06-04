@@ -54,13 +54,20 @@ jobs:
         with:
           immutable: true
 
-      # This step is only required for releases, but we run it always to ensure that the version is set correctly
-      # During development, we use a fixed version of 0.0.1-dev+<sha>
-      # For releases, we use the version provided by the workflow call input
+      - name: Set version variable
+        id: version_step
+        shell: bash
+        run: |
+         if [ "${{ inputs.version }}" = "0.0.1" ]; then
+           echo "version=0.0.1-${{ github.sha }}" >> $GITHUB_OUTPUT
+         else
+           echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+         fi
+
       - name: Version the package
         uses: simatic-ax/actions/apax-version@v3
         with:
-          version: ${{ inputs.version == '0.0.1' && '0.0.1-' + github.sha || inputs.version }}
+          version: ${{ steps.version_step.outputs.version }}
       
       - name: Build source code
         uses: simatic-ax/actions/apax-build@v3
