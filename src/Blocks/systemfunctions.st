@@ -1,4 +1,4 @@
-using system.timer;
+using System.Timer;
 using system.DateTime;
 
 NAMESPACE Simatic.Ax.LAcycCom
