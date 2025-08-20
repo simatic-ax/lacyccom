@@ -38,3 +38,5 @@ files:
   - 'doc'
   - 'bin'
   - 'snippets'
+catalogs:
+  "@ax/simatic-ax": ^2504.0.0
