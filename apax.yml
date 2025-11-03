@@ -24,12 +24,12 @@ installStrategy: strict
 apaxVersion: 3.2.1
 # Dependencies
 devDependencies:
-  '@ax/sdk': ^2504.1.1
+  '@ax/sdk': ^2510.0.0
   "@simatic-ax/snippetscollection": ^1.1.0
 dependencies:
-  "@ax/system-timer": ^10.1.98
+  "@ax/system-timer": ^10.2.7
   "@ax/simatic-1500-distributedio": ^10.0.1
-  "@ax/system-serde": ^10.1.98
+  "@ax/system-serde": ^10.2.7
   "@ax/simatic-1500-clocks": ^10.0.6
 # Files, which will be shipped with the library
 files:
@@ -38,6 +38,3 @@ files:
   - 'doc'
   - 'bin'
   - 'snippets'
-
-
-  
