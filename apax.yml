@@ -22,15 +22,18 @@ targets:
 # Install Setting
 installStrategy: strict
 apaxVersion: 3.2.1
+catalogs:
+  "@ax/simatic-ax": ^2510.0.0
+
 # Dependencies
 devDependencies:
   '@ax/sdk': ^2510.0.0
   "@simatic-ax/snippetscollection": ^1.1.0
 dependencies:
   "@ax/system-timer": ^10.2.7
-  "@ax/simatic-1500-distributedio": ^10.0.1
   "@ax/system-serde": ^10.2.7
-  "@ax/simatic-1500-clocks": ^10.0.6
+  "@ax/simatic-distributedio": ^11.0.14
+  "@ax/simatic-clocks": ^11.0.14
 # Files, which will be shipped with the library
 files:
   - 'README.md'

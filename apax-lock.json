@@ -8,13 +8,16 @@
     "version": "0.0.0-placeholder",
     "dependencies": {
       "@ax/system-timer": "^10.2.7",
-      "@ax/simatic-1500-distributedio": "^10.0.1",
       "@ax/system-serde": "^10.2.7",
-      "@ax/simatic-1500-clocks": "^10.0.6"
+      "@ax/simatic-distributedio": "^11.0.14",
+      "@ax/simatic-clocks": "^11.0.14"
     },
     "devDependencies": {
       "@ax/sdk": "^2510.0.0",
       "@simatic-ax/snippetscollection": "^1.1.0"
+    },
+    "catalogs": {
+      "@ax/simatic-ax": "^2510.0.0"
     }
   },
   "packages": {
@@ -99,19 +102,19 @@
     },
     "@ax/build-native": {
       "name": "@ax/build-native",
-      "version": "16.1.17",
-      "integrity": "sha512-MxzhTXI425dwQgqmhDmVVM885GPT39e6NPRegUZnXHtMUNlxR82F4oifc5rr9JmBwAM2XZ/TDKi/TBHNCaNhpg==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native/-/build-native-16.1.17.tgz",
+      "version": "16.1.51",
+      "integrity": "sha512-1nbOf71OkRdAdQcs7gOXLWAnY6tbk+9vAFA8QPv/RGyvpBDWeTqRD/8kFlMU9M7j9p8tMwRdEbraouupjRfqDA==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native/-/build-native-16.1.51.tgz",
       "dependencies": {
-        "@ax/build-native-winx64": "16.1.17",
-        "@ax/build-native-linux": "16.1.17"
+        "@ax/build-native-linux": "16.1.51",
+        "@ax/build-native-winx64": "16.1.51"
       }
     },
     "@ax/build-native-linux": {
       "name": "@ax/build-native-linux",
-      "version": "16.1.17",
-      "integrity": "sha512-45mKw828x0akm1CENzNefVhggMApddltdCgocM/n6snMWxPRJCmhazFmVxTSomOnOsEMuZDsl0eHUl4IvO/oZQ==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native-linux/-/build-native-linux-16.1.17.tgz",
+      "version": "16.1.51",
+      "integrity": "sha512-+V9iw11whXn4szgrQ4V+StVJCu0kmup0MzEqENTcN9qTyncylThW7HdBpSVYfIWdqRf34n9mVFDHws5DU3dI0A==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native-linux/-/build-native-linux-16.1.51.tgz",
       "os": [
         "linux"
       ],
@@ -122,9 +125,9 @@
     },
     "@ax/build-native-winx64": {
       "name": "@ax/build-native-winx64",
-      "version": "16.1.17",
-      "integrity": "sha512-qv8r2ahouOQivHCWveGX/ktNTYvosf/aiHvZ6w1h7wAjAOgTjf7zhFZs07AquFmQ9rcUP0ZNPRBFziSvEmOmpA==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native-winx64/-/build-native-winx64-16.1.17.tgz",
+      "version": "16.1.51",
+      "integrity": "sha512-q1gthX07yQD0OiQRE3EYqiWw3xTqmeMv4Rdq5AccEkr/JSBx21LU9YoKaSBSByVXouiu2AotELB50J0AIEqAaQ==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/build-native-winx64/-/build-native-winx64-16.1.51.tgz",
       "os": [
         "win32"
       ],
@@ -406,18 +409,18 @@
         "@ax/trace": "3.1.0"
       }
     },
-    "@ax/simatic-1500-clocks": {
-      "name": "@ax/simatic-1500-clocks",
-      "version": "10.0.6",
-      "integrity": "sha512-nWwNz3ObtBxJzz3e2/huSW2ibe8K3P1DdGzwg5fPL0bPNOCwY6Kt2+zA0YIhWE9LgqGgn/mC9P8RMdWvXaDfqQ==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-1500-clocks/-/simatic-1500-clocks-10.0.6.tgz",
+    "@ax/simatic-clocks": {
+      "name": "@ax/simatic-clocks",
+      "version": "11.0.14",
+      "integrity": "sha512-TLlV+2uV9vjhxh7c0newDhj2pIiR2blN36Ztf7hPQxG6DloDLKAbYkZpHEUMi/lhC5gIiSAUnBPbDKOnXoA2AQ==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-clocks/-/simatic-clocks-11.0.14.tgz",
       "dependencies": {}
     },
-    "@ax/simatic-1500-distributedio": {
-      "name": "@ax/simatic-1500-distributedio",
-      "version": "10.0.1",
-      "integrity": "sha512-ZuuwiTXyCcfr4tHGZZb0Wwu2imLZwgGyoa2mGlbcwh1iqXWiNrlOdsA81JSA5NnSXa8QZh9UtJo3za9N1al4lw==",
-      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-1500-distributedio/-/simatic-1500-distributedio-10.0.1.tgz",
+    "@ax/simatic-distributedio": {
+      "name": "@ax/simatic-distributedio",
+      "version": "11.0.14",
+      "integrity": "sha512-H5PKBNfBwP/lWcTB1w/FBxMggHplVNfPkzUOyN5MBHe+0ehbyNX78SPUXC1cp9rqbgY9oWRvP0SCzGtm0FR0Qw==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-distributedio/-/simatic-distributedio-11.0.14.tgz",
       "dependencies": {}
     },
     "@ax/simatic-package-tool": {
@@ -701,5 +704,85 @@
       "dependencies": {}
     }
   },
-  "workspaces": {}
+  "workspaces": {},
+  "catalogs": {
+    "@ax/simatic-ax": {
+      "name": "@ax/simatic-ax",
+      "version": "2510.0.0",
+      "integrity": "sha512-S5u9DDjdThQNZg0neo1Q4aebQj/0ezUUA+SJD73/+bTSTCbhEObtXm53nlBD5lr4Vjmv61l0B/Qzz8Asj7TLmQ==",
+      "resolved": "https://registry.simatic-ax.siemens.io/@ax/simatic-ax/-/simatic-ax-2510.0.0.tgz",
+      "dependencies": {},
+      "catalogDependencies": {
+        "@ax/apax-build": "2.1.79",
+        "@ax/ax2tia": "12.0.29",
+        "@ax/axunit-mocking": "8.4.20",
+        "@ax/axunitst": "8.4.20",
+        "@ax/axunitst-library": "8.4.20",
+        "@ax/build-native": "16.1.51",
+        "@ax/certificate-management": "2.0.0",
+        "@ax/dcp-utility": "1.2.0",
+        "@ax/diagnostic-buffer": "2.0.0",
+        "@ax/hardware-diagnostics": "1.0.0",
+        "@ax/hw-et200sp": "4.0.0",
+        "@ax/hw-s7-1500": "4.0.0",
+        "@ax/hwc": "4.0.0",
+        "@ax/hwld": "3.2.0",
+        "@ax/mod": "1.9.4",
+        "@ax/mon": "1.9.4",
+        "@ax/plc-control": "1.4.3",
+        "@ax/plc-info": "4.0.0",
+        "@ax/plc-web-app-manager": "1.1.0",
+        "@ax/sdb": "1.9.4",
+        "@ax/simatic-alarming": "5.0.1",
+        "@ax/simatic-clocks": "11.0.14",
+        "@ax/simatic-communication": "11.0.1",
+        "@ax/simatic-crypto": "4.0.15",
+        "@ax/simatic-diagnostics": "5.0.14",
+        "@ax/simatic-diagnostics-hardware": "11.0.0",
+        "@ax/simatic-distributedio": "11.0.14",
+        "@ax/simatic-fileaccess": "10.0.8",
+        "@ax/simatic-hardware-utilities": "6.0.19",
+        "@ax/simatic-memoryaccess": "6.0.19",
+        "@ax/simatic-modbusrtu": "4.0.6",
+        "@ax/simatic-motioncontrol-native-v5": "10.0.9",
+        "@ax/simatic-motioncontrol-native-v6": "10.0.9",
+        "@ax/simatic-motioncontrol-native-v7": "10.0.9",
+        "@ax/simatic-motioncontrol-native-v8": "10.0.9",
+        "@ax/simatic-motioncontrol-native-v9": "10.0.9",
+        "@ax/simatic-motioncontrol-v7": "10.0.9",
+        "@ax/simatic-motioncontrol-v7-mocking": "10.0.9",
+        "@ax/simatic-motioncontrol-v8": "10.0.9",
+        "@ax/simatic-motioncontrol-v8-mocking": "10.0.9",
+        "@ax/simatic-motioncontrol-v9": "10.0.9",
+        "@ax/simatic-motioncontrol-v9-mocking": "10.0.9",
+        "@ax/simatic-package-tool": "2.0.17",
+        "@ax/simatic-pointtopoint": "4.0.6",
+        "@ax/simatic-tasks": "11.0.2",
+        "@ax/simatic-technology-objects": "4.0.8",
+        "@ax/sld": "3.5.5",
+        "@ax/st-ls": "11.0.142",
+        "@ax/st-opcua.stc-plugin": "2.0.0",
+        "@ax/st-resources.stc-plugin": "4.0.3",
+        "@ax/stc": "11.0.142",
+        "@ax/system": "10.2.7",
+        "@ax/system-bitaccess": "10.2.7",
+        "@ax/system-conversion": "10.2.7",
+        "@ax/system-counters": "10.2.7",
+        "@ax/system-data": "10.2.7",
+        "@ax/system-datetime": "10.2.7",
+        "@ax/system-edgedetection": "10.2.7",
+        "@ax/system-fastmath": "10.2.7",
+        "@ax/system-math": "10.2.7",
+        "@ax/system-selection": "10.2.7",
+        "@ax/system-serde": "10.2.7",
+        "@ax/system-strings": "10.2.7",
+        "@ax/system-timer": "10.2.7",
+        "@ax/target-llvm": "11.0.142",
+        "@ax/target-mc7plus": "11.0.142",
+        "@ax/tia2st": "4.0.10",
+        "@ax/trace": "3.1.0",
+        "@ax/sdk": "2510.0.0"
+      }
+    }
+  }
 }
