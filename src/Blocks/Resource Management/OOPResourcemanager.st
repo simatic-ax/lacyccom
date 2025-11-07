@@ -2,7 +2,7 @@ using System.Timer;
 NAMESPACE Simatic.Ax.LAcycCom
 
     INTERFACE Resourcemanager
-        METHOD Allocate : Int  //AllocatedIndex
+        METHOD Allocate : INT  //AllocatedIndex
           VAR_INPUT
             hardwareId : HW_IO;   // Hardware identifier of the hardware module
          END_VAR
@@ -11,82 +11,79 @@ NAMESPACE Simatic.Ax.LAcycCom
         METHOD GetRessource : LAcycCom_ResourceManagerRetval
             VAR_INPUT
                 AllocatedIndex : INT;
-            end_var
+            END_VAR
 
         END_METHOD
 
         METHOD Release : LAcycCom_ResourceManagerRetval
           VAR_INPUT
               AllocatedIndex : INT;
-          end_var
+          END_VAR
 
         END_METHOD
     END_INTERFACE
-
 Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
         VAR PRIVATE
-            statResourceAddInfo  : Array[0..RESOURCES_ARRAY_UPPER_LIM] of LAcycCom_TypestatResourceAddInfo;
-            instBufferLockWatchdog   : OnDelay;   // Watchdog timer for request buffer lock bit
-            instRuntime     : OnDelay;   // Timer for runtime measurement
-            instCycleTime   : OnDelay;   // Timer for detecting cycle time
-            statIM0Data     : Typedata;   // Identification and maintanance data
-            statNoOfUsedResources  : Int := 0;   // Number of used resources
-            statUpperLimResources  : Int := 0;   // Upper limit of resources for acyclic communication
-            statErrorUserCleared  : Bool := FALSE;   // Error occurred that can only be solved by user; rising edge at enable input is necessary
-            statErrorAutoCleared  : Bool := FALSE;   // Error occurred that can be acknowledged by FB
-            statEnableOld  : Bool := FALSE;   // Old value of enable for edge detection
-            statDisabling  : Bool := FALSE;   // FB is disabled and currently finishing all requests
-            instGetIMData  : Get_IM_Data;   // Reading identification and maintanance data
-            requestBuffer : LAcycCom_typeRequestBuffer;   // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
-            statdiagnostics : LAcycCom_typeResourceManagerDiag;   // Diagnostics information
-            status  : Word := STATUS_NO_CALL;   // Current status of FB
-            enable : Bool := True;   // TRUE: Enable functionality of FB
+            statResourceAddInfo   : Array[0..RESOURCES_ARRAY_UPPER_LIM] of LAcycCom_TypestatResourceAddInfo;
+            instBufferLockWatchdog: OnDelay;                                                                  // Watchdog timer for request buffer lock bit
+            instRuntime           : OnDelay;                                                                  // Timer for runtime measurement
+            instCycleTime         : OnDelay;                                                                  // Timer for detecting cycle time
+            statIM0Data           : Typedata;                                                                 // Identification and maintanance data
+            statNoOfUsedResources : INT := 0;                                                                 // Number of used resources
+            statUpperLimResources : INT := 0;                                                                 // Upper limit of resources for acyclic communication
+            statErrorUserCleared  : BOOL := FALSE;                                                            // Error occurred that can only be solved by user; rising edge at enable input is necessary
+            statErrorAutoCleared  : BOOL := FALSE;                                                            // Error occurred that can be acknowledged by FB
+            statEnableOld         : BOOL := FALSE;                                                            // Old value of enable for edge detection
+            statDisabling         : BOOL := FALSE;                                                            // FB is disabled and currently finishing all requests
+            instGetIMData         : Get_IM_Data;                                                              // Reading identification and maintanance data
+            requestBuffer         : LAcycCom_typeRequestBuffer;                                               // Connection to the request buffer of the resource manager. All LAcycCom blocks have to use the same request buffer
+            statdiagnostics       : LAcycCom_typeResourceManagerDiag;                                         // Diagnostics information
+            status                : WORD := STATUS_NO_CALL;                                                   // Current status of FB
+            enable                : BOOL := TRUE;                                                             // TRUE: Enable functionality of FB
           END_VAR
 
-
         VAR CONSTANT
-            TIME_RUNTIME_TIMER : Time := T#1D;   // Maximum time for runtime timer
-            STATUS_NO_CALL : Word := WORD#16#7000;   // No call of FB
-            STATUS_FIRST_CALL : Word := WORD#16#7001;   // First call of FB after enabling
-            STATUS_SUBSEQUENT_CALL : Word := WORD#16#7002;   // Subsequent call of FB
-            STATUS_BUFFER_FULL : Word := WORD#16#7003;   // Buffer is full; no more elements can be added
-            WARN_BUFFER_LOCKED : Word := WORD#16#7100;   // Buffer lock time expired; lock is reset by FB
-            WARN_WRONG_HARDWARE_ID : Word := WORD#16#7101;   // Internal called system instruction LOG2GEO returned an error (The address specified at the LADDR parameter is invalid)
-            MAX_NO_OF_RESOURCES_1200_V4 : Int := 4;   // Maximum number of resources for acyclic communication when using a 1200 CPU (Firmware V4.x)
-            MAX_NO_OF_RESOURCES_1500_V1 : Int := 10;   // Maximum number of resources for acyclic communication when using a 1500 CPU (Firmware V1.x)
-            MAX_NO_OF_RESOURCES_1500_V2 : Int := 20;   // Maximum number of resources for acyclic communication when using a 1500 CPU (Firmware V2.x)
-            RESOURCES_ARRAY_UPPER_LIM : Int := 19;   // Upper limit of actualEnableIndexes array in PLC data type LAcycCom_typeRequestBuffer
+            TIME_RUNTIME_TIMER          : Time := T#1D;          // Maximum time for runtime timer
+            STATUS_NO_CALL              : WORD := WORD#16#7000;  // No call of FB
+            STATUS_FIRST_CALL           : WORD := WORD#16#7001;  // First call of FB after enabling
+            STATUS_SUBSEQUENT_CALL      : WORD := WORD#16#7002;  // Subsequent call of FB
+            STATUS_BUFFER_FULL          : WORD := WORD#16#7003;  // Buffer is full; no more elements can be added
+            WARN_BUFFER_LOCKED          : WORD := WORD#16#7100;  // Buffer lock time expired; lock is reset by FB
+            WARN_WRONG_HARDWARE_ID      : WORD := WORD#16#7101;  // Internal called system instruction LOG2GEO returned an error (The address specified at the LADDR parameter is invalid)
+            MAX_NO_OF_RESOURCES_1200_V4 : INT  := 4;             // Maximum number of resources for acyclic communication when using a 1200 CPU (Firmware V4.x)
+            MAX_NO_OF_RESOURCES_1500_V1 : INT  := 10;            // Maximum number of resources for acyclic communication when using a 1500 CPU (Firmware V1.x)
+            MAX_NO_OF_RESOURCES_1500_V2 : INT  := 20;            // Maximum number of resources for acyclic communication when using a 1500 CPU (Firmware V2.x)
+            RESOURCES_ARRAY_UPPER_LIM   : INT  := 19;            // Upper limit of actualEnableIndexes array in PLC data type LAcycCom_typeRequestBuffer
         END_VAR
 
-        METHOD public execute
+        METHOD PUBLIC execute
             VAR_INPUT
                 config : LAcycCom_typeResourceManagerConf;   // Configuration structure of ResourceManager FB
             END_VAR
 
-
             VAR_TEMP
-                tempCurGeoAddr  : typeGEOADDR;   // Current Geo Address information
-                tempCurReqState : LAcycCom_TypestattempCurReqState;   // Current state of the request
-                tempCurRuntime : Time;   // Current runtime for FB
-                tempCycleTime : Time;   // Current cycle time
-                tempCurQueueTime : Time;   // Current queue time
-                tempNoOfRequests : Int;   // Number of requests
-                tempFirstQueueElement : Int;   // First element in current queue
-                tempIndex : Int;   // Index for loop handling
-                tempNoOfFreeResources : Int;   // Number of free resources
-                tempActBufferIndex : Int;   // Actual index of buffer element
-                tempQueueElementPrevious : Int;   // Queue element before current element
-                tempQueueElementNext : Int;   // Queue element after current element
-                tempRetVal : Int;   // Return value of system functions
-                tempByte : Byte;   // Temporary byte variable for slice command
-                tempStationInUse : Bool;   // Station is already processing with acyclic communication
+                tempCurGeoAddr          : typeGEOADDR;                       // Current Geo Address information
+                tempCurReqState         : LAcycCom_TypestattempCurReqState;  // Current state of the request
+                tempCurRuntime          : Time;                              // Current runtime for FB
+                tempCycleTime           : Time;                              // Current cycle time
+                tempCurQueueTime        : Time;                              // Current queue time
+                tempNoOfRequests        : INT;                               // Number of requests
+                tempFirstQueueElement   : INT;                               // First element in current queue
+                tempIndex               : INT;                               // Index for loop handling
+                tempNoOfFreeResources   : INT;                               // Number of free resources
+                tempActBufferIndex      : INT;                               // Actual index of buffer element
+                tempQueueElementPrevious: INT;                               // Queue element before current element
+                tempQueueElementNext    : INT;                               // Queue element after current element
+                tempRetVal              : INT;                               // Return value of system functions
+                tempByte                : BYTE;                              // Temporary BYTE variable for slice command
+                tempStationInUse        : BOOL;                              // Station is already processing with acyclic communication
             END_VAR
 
 
-        //Check if FB is been disabled
+        //Check IF FB is been disabled
         IF NOT enable AND statEnableOld THEN
-          //Check if no request is executed at the moment
+          //Check IF no request is executed at the moment
           IF (statNoOfUsedResources <= 0)
             OR statErrorUserCleared
           THEN
@@ -116,7 +113,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
             statDisabling := TRUE;
           END_IF;
 
-          //Check if FB is enabled
+          //Check IF FB is enabled
         ELSIF (enable AND NOT statEnableOld AND NOT statDisabling) THEN
           requestBuffer.header.lockBuffer := TRUE;
           requestBuffer.header.numberOfRequests := 0;
@@ -132,7 +129,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           instBufferLockWatchdog(signal := FALSE,
                                   duration := TIME_RUNTIME_TIMER);
 
-          statdiagnostics.maxNoOfRequests := uint#0;
+          statdiagnostics.maxNoOfRequests := UINT#0;
           statdiagnostics.maxRuntime := t#0s;
 
           FOR tempIndex := 0 TO LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM DO
@@ -152,8 +149,8 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
           REPEAT
             // Set maximum number of resources from I&M Data
-            instGetIMData(LADDR := word#50,
-                           IM_TYPE := uint#0,
+            instGetIMData(LADDR := UINT#50,
+                           IM_TYPE := UINT#0,
                            DATA := statIM0Data);
 
           UNTIL (instGetIMData.DONE) OR (instGetIMData.ERROR) END_REPEAT;
@@ -164,7 +161,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
               statUpperLimResources := MAX_NO_OF_RESOURCES_1200_V4 - 1;
 
             ELSE
-              // If no 1200 CPU it have to be a 1500 CPU or a 1500 Software controller
+              // IF no 1200 CPU it have to be a 1500 CPU OR a 1500 Software controller
               IF (statIM0Data.Software_Revision.Functional  >= 2) THEN
                 statUpperLimResources := MAX_NO_OF_RESOURCES_1500_V2 - 1; // Firmware V2.x
 
@@ -173,11 +170,11 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
               END_IF;
             END_IF;
           ELSE
-            // If no I&M data coul be read, use the lower number of resources
+            // IF no I&M data coul be read, use the lower number of resources
             statUpperLimResources := MAX_NO_OF_RESOURCES_1200_V4 - 1;
           END_IF;
 
-          // Check if resource array is shorter then possible resources
+          // Check IF resource array is shorter THEN possible resources
           IF (statUpperLimResources > RESOURCES_ARRAY_UPPER_LIM) THEN
             statUpperLimResources := RESOURCES_ARRAY_UPPER_LIM;
           END_IF;
@@ -188,13 +185,13 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           statEnableOld := enable; //Set old value of enable for edge detection and end execution
           RETURN;
 
-          //Check if user cleared error in FB occurred
+          //Check IF user cleared error in FB occurred
         ELSIF statErrorUserCleared THEN
           statEnableOld := enable;
           //No set of status necessary, because status already set when error occurred
           RETURN;
 
-          //Check if function block is disabled
+          //Check IF function block is disabled
         ELSIF NOT enable AND NOT statDisabling THEN
           status := STATUS_NO_CALL;
           statEnableOld := enable;
@@ -230,7 +227,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
         instBufferLockWatchdog(signal := requestBuffer.header.lockBuffer,
                                 duration := config.timeoutBufferLock);
 
-        // Check if buffer was locked too long
+        // Check IF buffer was locked too long
         IF instBufferLockWatchdog.output THEN
           statErrorAutoCleared := TRUE;
           requestBuffer.header.lockBuffer := FALSE;
@@ -251,7 +248,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           // Check and release buffer items
           FOR tempIndex := 0 TO statUpperLimResources DO
             tempActBufferIndex := requestBuffer.header.activeRequests[tempIndex].bufferIndex;
-            // Check if current index is used for a resource
+            // Check IF current index is used for a resource
             IF (tempActBufferIndex >= 0) THEN
               tempByte := requestBuffer.elements[tempActBufferIndex].state;
               tempCurReqState.allocated := tempByte.%X0;
@@ -259,7 +256,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
               tempCurReqState.release := tempByte.%X2;
               tempCurReqState.rejected := tempByte.%X3;
 
-              // Check if resource can be released
+              // Check IF resource can be released
               IF tempCurReqState.release THEN
                 tempQueueElementPrevious := requestBuffer.elements[tempActBufferIndex].queueElementPrevious;
                 tempQueueElementNext := requestBuffer.elements[tempActBufferIndex].queueElementNext;
@@ -298,7 +295,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                 statResourceAddInfo[tempIndex].IOSystem := -1;
                 statResourceAddInfo[tempIndex].station := -1;
 
-                // Check if buffer was full when last element tries to allocate
+                // Check IF buffer was full when last element tries to allocate
                 IF (requestBuffer.header.nextFreeElement < 0) THEN
                   // Set actual write index to current released element
                   requestBuffer.header.nextFreeElement := tempActBufferIndex;
@@ -325,11 +322,11 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
             tempQueueElementNext := requestBuffer.elements[tempActBufferIndex].queueElementNext; // Set next element
             tempByte := requestBuffer.elements[tempActBufferIndex].state;
             tempCurReqState.allocated := tempByte.%X0;
-            tempCurReqState.assigned := tempByte.%X1;
-            tempCurReqState.release := tempByte.%X2;
-            tempCurReqState.rejected := tempByte.%X3;
+            tempCurReqState.assigned  := tempByte.%X1;
+            tempCurReqState.release   := tempByte.%X2;
+            tempCurReqState.rejected  := tempByte.%X3;
 
-            // Check if resource can be released
+            // Check IF resource can be released
             IF tempCurReqState.release THEN
               tempQueueElementPrevious := requestBuffer.elements[tempActBufferIndex].queueElementPrevious;
 
@@ -356,7 +353,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                 requestBuffer.elements[tempQueueElementPrevious].queueElementNext := tempQueueElementNext;
               END_IF;
 
-              requestBuffer.elements[tempActBufferIndex].state := Byte#16#00;
+              requestBuffer.elements[tempActBufferIndex].state := BYTE#16#00;
               requestBuffer.elements[tempActBufferIndex].hardwareId :=  HW_IO#default;
               requestBuffer.elements[tempActBufferIndex].queueElementPrevious := -1;
               requestBuffer.elements[tempActBufferIndex].queueElementNext := -1;
@@ -373,7 +370,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                 END_IF;
               END_FOR;
 
-              // Check if buffer was full when last element tries to allocate
+              // Check IF buffer was full when last element tries to allocate
               IF (requestBuffer.header.nextFreeElement < 0) THEN
                 // Set actual write index to current released element
                 requestBuffer.header.nextFreeElement := tempActBufferIndex;
@@ -387,7 +384,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
               tempCurQueueTime := tempCycleTime + requestBuffer.elements[tempActBufferIndex].queueTime;
               requestBuffer.elements[tempActBufferIndex].queueTime := tempCurQueueTime;
 
-              // Check if resource was already assigned
+              // Check IF resource was already assigned
               IF tempCurReqState.assigned THEN
                 FOR tempIndex := 0 TO statUpperLimResources DO
                   IF (requestBuffer.header.activeRequests[tempIndex].bufferIndex = tempActBufferIndex) THEN
@@ -413,22 +410,22 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                   requestBuffer.elements[tempActBufferIndex].state.%X2 := TRUE; // Request release
                 END_IF;
 
-                // Check if block is disabled and reject all new requests
+                // Check IF block is disabled and reject all new requests
               ELSIF (statDisabling) THEN
                 // Current element is rejected cause function block is disabled
                 requestBuffer.elements[tempActBufferIndex].state.%X3 := TRUE; // Request rejected
 
-                // If current time is over the delay, release the request asap
+                // IF current time is over the delay, release the request asap
                 IF (tempCurQueueTime > config.delayReleaseAfterReject) THEN
                   requestBuffer.elements[tempActBufferIndex].state.%X2 := TRUE; // Request release
                 END_IF;
 
               ELSE
-                // Check if device for hardware address is already in used by a other request
+                // Check IF device for hardware address is already in used by a other request
                 tempRetVal := LOG2GEO(LADDR := requestBuffer.elements[tempActBufferIndex].hardwareId,
                                        GEOADDR => tempCurGeoAddr);
 
-                // Check if everything is okay
+                // Check IF everything is okay
                 IF tempRetVal <> 0 THEN
                   requestBuffer.elements[tempActBufferIndex].state.%X3 := TRUE; // Request rejected because of error in system function
                   statErrorAutoCleared := TRUE;
@@ -437,11 +434,11 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                   ; // Everything okay
                 END_IF;
 
-                // Check if hardware is already in use
+                // Check IF hardware is already in use
                 tempStationInUse := FALSE;
 
                 FOR tempIndex := 0 TO statUpperLimResources DO
-                  // Check if station is already in use by a request
+                  // Check IF station is already in use by a request
                   IF (statResourceAddInfo[tempIndex].IOSystem = TO_INT(tempCurGeoAddr.IOSYSTEM)) AND
                     (statResourceAddInfo[tempIndex].station = TO_INT(tempCurGeoAddr.STATION))
                   THEN
@@ -452,7 +449,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                   END_IF;
                 END_FOR;
 
-                // Check if station can be enabled
+                // Check IF station can be enabled
                 IF NOT tempStationInUse THEN
                   // Search for free resource
                   FOR tempIndex := 0 TO statUpperLimResources DO
@@ -475,7 +472,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                   END_FOR;
 
                 ELSE
-                  // Current request can not be added, because other request is active on station
+                  // Current request can NOT be added, because other request is active on station
                   IF (tempCurQueueTime < config.maxQueueTime) THEN
                     ; // Everything okay
                   ELSIF (tempCurQueueTime < (config.maxQueueTime + config.delayReleaseAfterReject)) THEN
@@ -494,7 +491,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
 
           requestBuffer.header.lockBuffer := FALSE;
 
-          // Check if block can be disabled
+          // Check IF block can be disabled
           IF (statDisabling AND (tempNoOfRequests = 0)) THEN
             statDisabling := FALSE; // Reset disabling bit
 
@@ -516,11 +513,9 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
             statErrorAutoCleared := FALSE;
             status := STATUS_NO_CALL;
 
-
           ELSE
             requestBuffer.header.numberOfRequests := tempNoOfRequests;
           END_IF;
-
 
           // Calculate runtime
           instRuntime(signal := TRUE,
@@ -566,28 +561,28 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
         END_IF;
         statdiagnostics.status := status;
         //----------------------------------------------------------------------------------------------
-        If status = STATUS_NO_CALL Then
-          enable := True;
-        End_IF;
+        IF status = STATUS_NO_CALL THEN
+          enable := TRUE;
+        END_IF;
     end_Method
 
     METHOD Reset // Disable Funkction, function get automatic enabled
       enable := FALSE;
     END_METHOD
 
-    METHOD PUBLIC Allocate : Int  //AllocatedIndex
+    METHOD PUBLIC Allocate : INT  //AllocatedIndex
       VAR_INPUT
           hardwareId : HW_IO := HW_IO#default;   // Hardware identifier of the hardware module
       END_VAR
       VAR_TEMP
-          tempLoopIndex : int;
-          tempLastQueueElement : Int;
-      end_var
+          tempLoopIndex : INT;
+          tempLastQueueElement : INT;
+      END_VAR
 
       IF (requestBuffer.header.lockBuffer = FALSE) AND (requestBuffer.header.nextFreeElement >= 0) AND (requestBuffer.header.nextFreeElement <= LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
         requestBuffer.header.lockBuffer := TRUE;
         Allocate := requestBuffer.header.nextFreeElement;
-        requestBuffer.elements[Allocate].state := byte#16#00;
+        requestBuffer.elements[Allocate].state := BYTE#16#00;
         requestBuffer.elements[Allocate].state.%X0 := TRUE;
         requestBuffer.elements[Allocate].hardwareId := hardwareId;
         requestBuffer.elements[Allocate].queueElementNext := -1;
@@ -635,7 +630,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
     METHOD PUBLIC GetRessource : LAcycCom_ResourceManagerRetval
       VAR_INPUT
           AllocatedIndex : INT := -1;
-      end_var
+      END_VAR
                     // Check buffer index for correctness
                     IF (AllocatedIndex < 0) OR (AllocatedIndex > LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
                       GetRessource := LAcycCom_ResourceManagerRetval#ERR_INVALID_BUF_INDEX;
@@ -656,7 +651,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
                         GetRessource := LAcycCom_ResourceManagerRetval#STATUS_BUSY;
 
                       ELSE
-                        // Element not enabled yet
+                        // Element NOT enabled yet
                         GetRessource := LAcycCom_ResourceManagerRetval#STATUS_GET_RESOURCE;
                       END_IF;
 
@@ -665,7 +660,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
   METHOD PUBLIC Release : LAcycCom_ResourceManagerRetval
     VAR_INPUT
         AllocatedIndex : INT;
-    end_var
+    END_VAR
     IF (AllocatedIndex < 0) OR (AllocatedIndex > LAcycComConstantsInt#LACYCCOM_BUFFER_ELEMENTS_UPPER_LIM) THEN
       Release := LAcycCom_ResourceManagerRetval#ERR_INVALID_BUF_INDEX;
 
