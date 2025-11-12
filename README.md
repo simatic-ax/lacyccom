@@ -37,7 +37,7 @@ Please refer to their specific documentation pages.
 
 ## Example
 
-[docs/appExample.md](Go here for an application example)
+[Go here for an application example](docs/appExample.md)
 
 ## Contribution
 
