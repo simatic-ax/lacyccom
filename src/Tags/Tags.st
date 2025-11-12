@@ -13,14 +13,14 @@ NAMESPACE Simatic.Ax.LAcycCom
 		);		
 	END_TYPE
 
-	type LAcycComConstantsByte : byte (
+	TYPE LAcycComConstantsByte : BYTE (
 		LACYCCOM_NO_COMMAND :=	BYTE#16#00,
 		LACYCCOM_READ_COMMAND :=	BYTE#16#01,
 		LACYCCOM_WRITE_COMMAND :=	BYTE#16#02
 		);
 	END_TYPE
 
-	type LAcycComConstantsSInt : SINT (
+	TYPE LAcycComConstantsSInt : SINT (
 		LACYCCOM_TYPE_ALARM	:=	SINT#1,
 		LACYCCOM_TYPE_FAULT	:=	SINT#2,
 		LACYCCOM_TYPE_SI_MESSAGE :=	SINT#3
