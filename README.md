@@ -29,9 +29,9 @@ Simatic.Ax.LAcycCom;
 
 The library contains two main functionalities.
 
-A [docs/resourceManagement.md](resource manager) that handles acyclic resources.
+A [resource manager](docs/resourceManagement.md) that handles acyclic resources.
 
-[docs/driveFunctions.md](Blocks for acyclic data exchange) with the SINAMICS drive.
+[Blocks for acyclic data exchange](docs/driveFunctions.md) with the SINAMICS drive.
 
 Please refer to their specific documentation pages.
 
