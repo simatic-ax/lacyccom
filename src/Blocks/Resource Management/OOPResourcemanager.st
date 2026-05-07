@@ -44,7 +44,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           END_VAR
 
         VAR CONSTANT
-            TIME_RUNTIME_TIMER          : Time := T#1D;          // Maximum time for runtime timer
+            TIME_RUNTIME_TIMER          : LTime := T#1D;          // Maximum time for runtime timer
             STATUS_NO_CALL              : WORD := WORD#16#7000;  // No call of FB
             STATUS_FIRST_CALL           : WORD := WORD#16#7001;  // First call of FB after enabling
             STATUS_SUBSEQUENT_CALL      : WORD := WORD#16#7002;  // Subsequent call of FB
@@ -65,9 +65,9 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
             VAR_TEMP
                 tempCurGeoAddr          : typeGEOADDR;                       // Current Geo Address information
                 tempCurReqState         : LAcycCom_TypestattempCurReqState;  // Current state of the request
-                tempCurRuntime          : Time;                              // Current runtime for FB
-                tempCycleTime           : Time;                              // Current cycle time
-                tempCurQueueTime        : Time;                              // Current queue time
+                tempCurRuntime          : LTime;                              // Current runtime for FB
+                tempCycleTime           : LTime;                              // Current cycle time
+                tempCurQueueTime        : LTime;                              // Current queue time
                 tempNoOfRequests        : INT;                               // Number of requests
                 tempFirstQueueElement   : INT;                               // First element in current queue
                 tempIndex               : INT;                               // Index for loop handling
@@ -214,7 +214,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
         instCycleTime(signal := TRUE,
                        duration := TIME_RUNTIME_TIMER);
 
-        tempCycleTime := to_time(instCycleTime.elapsedTime);
+        tempCycleTime := instCycleTime.elapsedTime;
 
         instCycleTime(signal := FALSE,
                        duration := TIME_RUNTIME_TIMER);
@@ -521,7 +521,7 @@ Class  OOPLAcycCom_ResourceManager IMPLEMENTS Resourcemanager
           instRuntime(signal := TRUE,
                        duration := TIME_RUNTIME_TIMER);
 
-          tempCurRuntime := to_time(instRuntime.elapsedTime);
+          tempCurRuntime := instRuntime.elapsedTime;
 
           instRuntime(signal := FALSE,
                        duration := TIME_RUNTIME_TIMER);

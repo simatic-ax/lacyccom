@@ -3,7 +3,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
       : STRUCT
          bufferIndex     : INT  := -1;    // Index of buffer element
-         maxAssignedTime : Time := T#1M;  // Maximum time a resource is assigned to a request
+         maxAssignedTime : LTime := T#1M;  // Maximum time a resource is assigned to a request
       END_STRUCT;
 
    END_TYPE
@@ -15,7 +15,7 @@ NAMESPACE Simatic.Ax.LAcycCom
          hardwareId           : HW_IO := HW_IO#default;    // Hardware identifier of the hardware module
          queueElementPrevious : INT   := -1;               // Element in queue before this element
          queueElementNext     : INT   := -1;               // Element in queue after this element
-         queueTime            : Time  := T#0MS;            // Time duration element is in queue
+         queueTime            : LTime  := T#0MS;            // Time duration element is in queue
       END_STRUCT;
 
    END_TYPE
@@ -44,10 +44,10 @@ NAMESPACE Simatic.Ax.LAcycCom
    TYPE LAcycCom_typeResourceManagerConf
 
       : STRUCT
-         timeoutBufferLock : Time := T#1S;   // Timeout for locking of complete request buffer, that means resource manager has no access
-         maxQueueTime : Time := T#30S;   // Maximum waiting time of a request waiting in queue before releasing the element is enforced by resource manager
-         maxAssignedTime : Time := T#1M;   // Maximum time a resource is assigned to a request
-         delayReleaseAfterReject : Time := T#10S;   // Delay for releasing resource after it was rejected by resource manager
+         timeoutBufferLock       : LTime := T#1S;   // Timeout for locking of complete request buffer, that means resource manager has no access
+         maxQueueTime            : LTime := T#30S;  // Maximum waiting time of a request waiting in queue before releasing the element is enforced by resource manager
+         maxAssignedTime         : LTime := T#1M;   // Maximum time a resource is assigned to a request
+         delayReleaseAfterReject : LTime := T#10S;  // Delay for releasing resource after it was rejected by resource manager
       END_STRUCT;
 
    END_TYPE
@@ -56,8 +56,8 @@ NAMESPACE Simatic.Ax.LAcycCom
 
       : STRUCT
          maxNoOfRequests: UINT;  // Maximum number of requests in use in request buffer
-         curRuntime     : Time;  // Runtime of last call
-         maxRuntime     : Time;  // Maximum runtime of FB
+         curRuntime     : LTime;  // Runtime of last call
+         maxRuntime     : LTime;  // Maximum runtime of FB
          status         : WORD;  // Current status
       END_STRUCT;
 
