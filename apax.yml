@@ -18,6 +18,7 @@ variables:
     - '--debug'
 targets:
   - 's7'
+  - 'llvm'
 # Install Setting
 installStrategy: strict
 # Dependencies
