@@ -63,8 +63,8 @@ NAMESPACE Simatic.Ax.LAcycCom
             LENGTH_PARAMETER_TELEGRAM_UPPER_LIM : INT  := 233;           // Maximum length of telegram for parameter information in BYTE
             LENGTH_READ_TELEGRAM_UPPER_LIM      : INT  := 113;           // Maximum length of telegram for parameter information in BYTE
             MAX_ERROR_COUNT                     : UINT := UINT#40;       // Maximum error counter
-            TIMER_TEMP_ERROR                    : Time := T#200MS;       // Waiting time until next system function block call
-            TIMER_ALLOCATION                    : Time := T#10S;         // Timer limit for allocating a request element
+            TIMER_TEMP_ERROR                    : LTime := T#200MS;       // Waiting time until next system function block call
+            TIMER_ALLOCATION                    : LTime := T#10S;         // Timer limit for allocating a request element
             MAX_DRIVE_OBJECT_NO                 : INT  := 254;           // Maximum drive object number limited by SINAMICS p101
             STATUS_EXECUTION_FINISHED           : WORD := WORD#16#0000;  // Execution finished without errors
             STATUS_NO_CALL                      : WORD := WORD#16#7000;  // No call of FB

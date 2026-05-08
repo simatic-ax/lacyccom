@@ -55,18 +55,18 @@ Releases the ressource of the allocated index to free up the resource for the ne
 
 | Symbol | Datatype | Default value | Explanation |
 | --- | --- | --- | --- |
-| timeoutBufferLock       | TIME     | T#1s | Timeout for locking of complete request buffer, that means resource manager has no access |
-| maxQueueTime       | TIME     | T#30s | Maximum waiting time of a request waiting in queue before releasing the element is enforced by resource manager |
-| maxAssignedTime       | TIME     | T#1m | Maximum time a resource is assigned to a request |
-| delayReleaseAfterReject       | TIME     | T#10s | Delay for releasing resource after it was rejected by resource manager |
+| timeoutBufferLock       | LTIME     | T#1s | Timeout for locking of complete request buffer, that means resource manager has no access |
+| maxQueueTime       | LTIME     | T#30s | Maximum waiting time of a request waiting in queue before releasing the element is enforced by resource manager |
+| maxAssignedTime       | LTIME     | T#1m | Maximum time a resource is assigned to a request |
+| delayReleaseAfterReject       | LTIME     | T#10s | Delay for releasing resource after it was rejected by resource manager |
 
 ### Type LAcycCom_typeResourceManagerDiag
 
 | Symbol | Datatype | Default value | Explanation |
 | --- | --- | --- | --- |
 | maxNoOfRequests | UINT | - | Maximum number of requests in use in request buffer |
-| curRuntime | TIME | - | Runtime of last call |
-| maxRuntime | TIME | - | Maximum runtime of execute method |
+| curRuntime | LTIME | - | Runtime of last call |
+| maxRuntime | LTIME | - | Maximum runtime of execute method |
 | status | WORD | - | current status |
 
 ## Enumerations
