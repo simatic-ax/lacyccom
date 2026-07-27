@@ -35,13 +35,13 @@ Used to attach a resource manager instance to the class. For operation, a valid 
 
 ## Class classReadDriveParams
 
-### Method AddatasetItem
+### Method AddDatasetItem
 
 | Symbol | Datatype | Type | Explanation |
 | --- | --- | --- | --- |
 | datasetItem | LAcycCom_typeDriveDataset | INPUT | Item you want to add to the dataset for a read request |
 | element_no | INT | INPUT | -1: add to the list. >= 0: Overwrite item on the list |
-| AddatasetItem | INT | RETURN | number of list entries after adding the dataset |
+| AddDatasetItem | INT | RETURN | number of list entries after adding the dataset |
 
 Adds a dataset item to the list of items you want to read from the drive. You can either write all items into a specific list element, or let the system attach the item to the list by setting the element number to -1.
 
@@ -54,30 +54,30 @@ Adds a dataset item to the list of items you want to read from the drive. You ca
 | parameterCount | INT | INPUT | number of parameters to read |
 | Start | BOOL | RETURN | TRUE: Command was started successfully FALSE: Command could not be started, there is an issue in the configuration |
 
-Starts a request to read multiple parameters that have been added to the dataset list via the `AddatasetItem` method.
+Starts a request to read multiple parameters that have been added to the dataset list via the `AddDatasetItem` method.
 
 For compability reasons, there are two more methods with the name `start` in this class. In one instance, the input `driveObjectId` is set as an UINT for legacy users to avoid breaking existing applications. The second instance drops the input `driveObjectId` completely, if you are using the hardware id of the submodule.
 
-### Method ReaddatasetItem
+### Method ReadDatasetItem
 
 | Symbol | Datatype | Type | Explanation |
 | --- | --- | --- | --- |
 | element_no | INT | INPUT | item index you want to read |
-| ReaddatasetItem | LAcycCom_typeDriveDataset | RETURN | Returns the dataset for the element number you requested |
+| ReadDatasetItem | LAcycCom_typeDriveDataset | RETURN | Returns the dataset for the element number you requested |
 
-### Method ReaddatasetValue
-
-| Symbol | Datatype | Type | Explanation |
-| --- | --- | --- | --- |
-| element_no | INT | INPUT | item index you want to read |
-| ReaddatasetValue | REAL | RETURN | Returns the value of the item formatted as a 32-bit floating point value (REAL) |
-
-### Method ReaddatasetValue
+### Method ReadDatasetValue
 
 | Symbol | Datatype | Type | Explanation |
 | --- | --- | --- | --- |
 | element_no | INT | INPUT | item index you want to read |
-| ReaddatasetValue | DWORD | RETURN | Returns the value of the item formatted as a DWORD value |
+| ReadDatasetValue | REAL | RETURN | Returns the value of the item formatted as a 32-bit floating point value (REAL) |
+
+### Method ReadDatasetValue
+
+| Symbol | Datatype | Type | Explanation |
+| --- | --- | --- | --- |
+| element_no | INT | INPUT | item index you want to read |
+| ReadDatasetValue | DWORD | RETURN | Returns the value of the item formatted as a DWORD value |
 
 ### Method DeleteList
 
@@ -113,13 +113,13 @@ For compability reasons, there are two more methods with the name `start` in thi
 
 ## Class LAcycCom_classWriteDriveParams
 
-### Method AddatasetItem
+### Method AddDatasetItem
 
 | Symbol | Datatype | Type | Explanation |
 | --- | --- | --- | --- |
 | datasetItem | LAcycCom_typeDriveDataset | INPUT | Item you want to add to the dataset for a write request |
 | element_no | INT | INPUT | -1: add to the list. >= 0: Overwrite item on the list |
-| AddatasetItem | INT | RETURN | number of list entries after adding the dataset |
+| AddDatasetItem | INT | RETURN | number of list entries after adding the dataset |
 
 Adds a dataset item to the list of items you want to write to the drive. You can either write all items into a specific list element, or let the system attach the item to the list by setting the element number to -1.
 
@@ -132,14 +132,14 @@ Adds a dataset item to the list of items you want to write to the drive. You can
 | parameterCount | INT | INPUT | number of parameters to write |
 | Start | BOOL | RETURN | TRUE: Command was started successfully FALSE: Command could not be started, there is an issue in the configuration |
 
-Starts a write operation of parameters previously added to the dataset list via the `AddatasetItem` method.
+Starts a write operation of parameters previously added to the dataset list via the `AddDatasetItem` method.
 
-### Method ReaddatasetItem
+### Method ReadDatasetItem
 
 | Symbol | Datatype | Type | Explanation |
 | --- | --- | --- | --- |
 | element_no | INT | INPUT | item index you want to read |
-| ReaddatasetItem | LAcycCom_typeDriveDataset | RETURN | Returns the dataset for the element number you requested |
+| ReadDatasetItem | LAcycCom_typeDriveDataset | RETURN | Returns the dataset for the element number you requested |
 
 Returns the dataset for a given element number. Useful to check, if the parameter was added to the list or to check, if the correct item was overwritten manually.
 

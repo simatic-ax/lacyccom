@@ -63,7 +63,7 @@ PROGRAM lacyccom_example
         datasetitem.parameterNumber := UINT#969;
         datasetitem.index := UINT#0;
         //add parameter to list
-        ReadParameter.AddatasetItem(datasetItem := datasetItem, element_no := -1);
+        ReadParameter.AddDatasetItem(datasetItem := datasetItem, element_no := -1);
         //reset initialization bit
         FirstCycle := FALSE;
     END_IF;
@@ -76,7 +76,7 @@ PROGRAM lacyccom_example
     CASE statusRead OF
         LAcycComstateDef#IDLE, LAcycComstateDef#DONE :
             //retreive last value. Since we only used one parameter, its index is 0
-            SystemRuntime := TO_UDINT(ReadParameter.ReaddatasetDWValue(element_no := 0));
+            SystemRuntime := TO_UDINT(ReadParameter.ReadDatasetDWValue(element_no := 0));
             //restart read request
             ReadParameter.Start(
                 driveObjectID := DO_ID_CONTROL_UNIT,

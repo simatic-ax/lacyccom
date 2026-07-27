@@ -607,7 +607,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
           END_METHOD
 
-          METHOD PUBLIC AddatasetItem : INT //Rückgabewert = anzahl der Listeneinträge
+          METHOD PUBLIC AddDatasetItem : INT //Rückgabewert = anzahl der Listeneinträge
             VAR_INPUT
                 datasetItem : LAcycCom_typeDriveDataset;
                 element_no  : INT := INT#-1; //-1 element an die liste anhängen. >=0 element überschreiben
@@ -615,7 +615,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
             IF element_no = -1 and statCountOfElements < LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM THEN
                     dataset[statCountOfElements] :=datasetItem;
-                AddatasetItem := statCountOfElements;
+                AddDatasetItem := statCountOfElements;
                 statCountOfElements := statCountOfElements + 1;
 
             ELSIF element_no > -1 and
@@ -626,18 +626,18 @@ NAMESPACE Simatic.Ax.LAcycCom
                     statCountOfElements := statCountOfElements + 1;
                 END_IF;
             ELSE
-                AddatasetItem := -1;
+                AddDatasetItem := -1;
             END_IF;
 
           END_METHOD
 
-        METHOD PUBLIC ReaddatasetItem : LAcycCom_typeDriveDataset
+        METHOD PUBLIC ReadDatasetItem : LAcycCom_typeDriveDataset
           VAR_INPUT
               element_no  : INT := INT#0;
           END_VAR
 
           IF element_no >= 0 and element_no <= LAcycComConstantsInt#LACYCCOM_WRITE_PARAMETERS_UPPER_LIM THEN
-              ReaddatasetItem := dataset[element_no];
+              ReadDatasetItem := dataset[element_no];
           END_IF;
 
         END_METHOD
