@@ -78,6 +78,7 @@ NAMESPACE Simatic.Ax.LAcycCom
             ERR_REQUEST_REJECTED                : WORD := WORD#16#8004;  // Request rejected
             ERR_RESOURCE_RELEASED               : WORD := WORD#16#8005;  // Request is already released
             ERR_AMBIGUOUS_FB_CALL               : WORD := WORD#16#8006;  // Execute input set during processing (possible inconsistent data at output)
+            ERR_NO_RESOURCE_MANAGER             : WORD := WORD#16#8007;  // No resource manager is present
             ERR_INVALID_DATA_TYPE               : WORD := WORD#16#8200;  // Invalid PLC data type at the input "dataset"
             ERR_INVALID_BUF_INDEX               : WORD := WORD#16#8201;  // Buffer index is invalid
             ERR_INVALID_DRIVE_OBJECT_ID         : WORD := WORD#16#8208;  // Drive Object ID is out of range (Drive Object ID < 0 for local access, 1..254 for global access is allowed)
@@ -105,6 +106,12 @@ NAMESPACE Simatic.Ax.LAcycCom
             //----------------------------------------------------------------------
             // State Machine
             //----------------------------------------------------------------------
+
+            //create error, if lacyccom is called without a valid request buffer
+            IF statrequestBuffer = NULL THEN
+              statFBState := LAcycCom_ReadWriteStatus#FB_ERROR;
+              statStatus := ERR_NO_RESOURCE_MANAGER;
+            END_IF;
 
             IF NOT (statFBState = LAcycCom_ReadWriteStatus#FB_IDLE OR
                     statFBState = LAcycCom_ReadWriteStatus#FB_DONE OR
@@ -144,7 +151,7 @@ NAMESPACE Simatic.Ax.LAcycCom
 
             IF (statFBState = LAcycCom_ReadWriteStatus#FB_ERROR) THEN
               // Release the allocated element when error occurs
-              IF (statStateNumber <> LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE) AND (statStateNumber <> LAcycCom_ReadWriteStatus#FB_ALLOCATE)
+              IF (statStateNumber <> LAcycCom_ReadWriteStatus#FB_FIRST_CYCLE) AND (statStateNumber <> LAcycCom_ReadWriteStatus#FB_ALLOCATE) AND statStatus <> ERR_NO_RESOURCE_MANAGER
               THEN
                 statrequestBuffer.release(statAllocatedIndex);
               END_IF;
