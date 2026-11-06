@@ -1,5 +1,5 @@
 using System.Timer;
-using siemens.Simatic.DistributedIO;
+USING Siemens.S7.DistributedIO;
 
 NAMESPACE Simatic.Ax.LAcycCom
     CLASS LAcycCom_classReadDriveSingleParams EXTENDS ReadWriteParameter

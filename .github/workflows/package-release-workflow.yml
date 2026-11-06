@@ -22,7 +22,6 @@ jobs:
     with:
       # checks out the branch that has been selected during the release process
       ref: ${{ github.event.release.target_commitish }}
-      version: ${{ github.event.release.tag_name }}
 
   release:
     name: Release the package
@@ -40,14 +39,11 @@ jobs:
           ref: ${{ github.event.release.target_commitish }}
           fetch-depth: 0
 
-      - name: Create bin folder
-        run: mkdir -p bin
-
       - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
           name: build-artifacts
-          path: bin
+          path: bin/release
 
       - name: Version package
         uses: simatic-ax/actions/apax-version@v4

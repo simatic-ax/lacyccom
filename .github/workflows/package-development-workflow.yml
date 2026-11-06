@@ -16,10 +16,6 @@ on:
       ref:
         required: true
         type: string
-      version:
-        required: false
-        type: string
-        default: '0.0.1'
 
 permissions:
   contents: read     # required for checkout
@@ -54,53 +50,23 @@ jobs:
         with:
           immutable: true
 
-      - name: Determine version
-        id: determine_version
-        shell: bash
-        run: |
-          INPUT_VERSION="${{ inputs.version }}"
-          SHA_SHORT="${{ github.sha }}"
-          
-          if [ -z "$INPUT_VERSION" ]; then
-            echo "version=0.0.1-${SHA_SHORT}" >> $GITHUB_OUTPUT
-          else
-            echo "version=${INPUT_VERSION}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Version the package
-        uses: simatic-ax/actions/apax-version@v4
-        with:
-          version: ${{ steps.determine_version.outputs.version }}
-      
       - name: Build source code
-        uses: simatic-ax/actions/apax-build@v4
+        uses: simatic-ax/actions/apax-make@v4
         with:
-          apax-build-targets: |
-            llvm
-            1500
-          apax-build-args: |
-            --debug
-            --log Debug
+          property: MakeConfigName:release
+          log: debug
 
       - name: Test source code
         uses: simatic-ax/actions/apax-test@v4
         with:
           coverage: true
-          loglevel: debug
-
-      - name: Check links
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
-        with:
-          check-modified-files-only: 'yes'
-          base-branch: 'main'
+          log-level: debug
 
       - name: Upload build artifacts
         if: ${{ github.event_name == 'workflow_call' || github.event_name == 'release'}}
         uses: actions/upload-artifact@v7
         with:
           name: build-artifacts
-          path: |
-            bin/1500 
-            bin/llvm
+          path: bin/release
           retention-days: 90
           if-no-files-found: error

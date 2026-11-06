@@ -12,30 +12,23 @@ repository:
 # Registry information, where the package will be published
 registries:
   '@simatic-ax': 'https://npm.pkg.github.com/'
-# Environment variables
-variables:
-  APAX_BUILD_ARGS:
-    - '--debug'
-targets:
-  - 's7'
-  - 'llvm'
 # Install Setting
 installStrategy: strict
-# Dependencies
+
 publicKeys:
   "@simatic-ax":
     "v1": "3792a7e926775425ccdd29ceed8c368c3008b5b33d7d5550b3cb1f58093e1dff"
     "v2": "7af3e394eb2b285a3d99ab8e1f745cc6db75704b30a80393339c721a92ffffd9"
 catalogs:
-  "@ax/simatic-ax": ^2510.21.0
+  "@ax-as/s7-catalog": ^2610.0.2
 devDependencies:
-  '@ax/sdk': ^2510.21.0
+  '@ax-as/s7-sdk': ^2610.0.2
   "@simatic-ax/snippetscollection": ^1.1.0
 dependencies:
-  "@ax/system-timer": ^10.4.66
-  "@ax/system-serde": ^10.4.66
-  "@ax/simatic-distributedio": ^11.1.9
-  "@ax/simatic-clocks": ^11.0.116
+  "@ax-as/system-timer-lib": ^11.0.232
+  "@ax-as/system-serde-lib": ^11.0.232
+  "@ax-as/s7-distributedio-lib": ^12.0.39
+  "@ax-as/s7-clocks-lib": ^12.0.86
 # Files, which will be shipped with the library
 files:
   - 'README.md'

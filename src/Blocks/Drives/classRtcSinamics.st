@@ -1,4 +1,4 @@
-USING Siemens.Simatic.Clocks;
+USING Siemens.S7.Clocks;
 USING System.DateTime;
 
 NAMESPACE Simatic.Ax.LAcycCom
