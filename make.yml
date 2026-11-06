@@ -1,8 +1,22 @@
 MakeConfiguration:
-  - Name: my_s7_compilation
+  - Name: release
     Type: lib
-    Targets:
+    Targets: 
       - s7
       - llvm
+    OutputDirectory: bin/release
+    StCompiler:
+      Debug: false
+      Devirtualization: true
+      OptimizationLevel: Full
+  - Name: debug
+    Type: lib
+    Targets: 
+      - s7
+      - llvm
+    OutputDirectory: bin/debug
     StCompiler:
       Debug: true
+      LoggingVerbosity: Debug
+      AdditionalHints: true
+      
