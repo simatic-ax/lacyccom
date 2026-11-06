@@ -1,5 +1,5 @@
 using System.Timer;
-using Siemens.Simatic.DistributedIO;
+using Siemens.S7.DistributedIO;
 
 NAMESPACE Simatic.Ax.LAcycCom
 

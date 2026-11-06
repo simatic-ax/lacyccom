@@ -1,0 +1,8 @@
+MakeConfiguration:
+  - Name: my_s7_compilation
+    Type: lib
+    Targets:
+      - s7
+      - llvm
+    StCompiler:
+      Debug: true
